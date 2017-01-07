@@ -70,7 +70,8 @@ var PreloaderScene = {
     this.game.load.image('menu', 'images/menu.jpg');
     this.game.load.tilemap('tilemap', 'images/map.json', null, Phaser.Tilemap.TILED_JSON);
     this.game.load.image('tiles', 'images/simples_pimples.png');
-    this.game.load.atlas('rush', 'images/rush_spritesheet.png', 'images/rush_spritesheet.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+    this.game.load.atlas('player', 'images/rush_spritesheet.png', 'images/rush_spritesheet.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+    this.game.load.atlas('enemy', 'images/enemy.png', 'images/rush_spritesheet.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
 
     this.load.onLoadComplete.add(this.loadComplete, this);
   },
@@ -153,7 +154,7 @@ module.exports = MenuScene;
 //mover el player.
 var PlayerState = {'JUMP':0, 'RUN':1, 'FALLING':2, 'STOP':3, 'FIGHT':4}
 var Direction = {'LEFT':0, 'RIGHT':1, 'NONE':3}
-var gameStop = true;
+var Enemies;
 
 //Scena de juego.
 var PlayScene = {
@@ -163,13 +164,16 @@ var PlayScene = {
     _jumpHight: 150, //altura máxima del salto.
     _playerState: PlayerState.STOP, //estado del player
     _direction: Direction.NONE,  //dirección inicial del player. NONE es ninguna dirección.
+    _enemies:  Enemies,
 
-    //Método constructor...
+  //Método constructor...
   create: function () {
       //Creamos al player con un sprite por defecto.
-      //TODO 5 Creamos a rush 'rush'  con el sprite por defecto en el 10, 10 con la animación por defecto 'rush_idle01'
-      this._player = this.game.add.sprite(10, 10, 'rush');
-      //TODO 4: Cargar el tilemap 'tilemap' y asignarle al tileset 'patrones' la imagen de sprites 'tiles'
+      this._player = this.game.add.sprite(10, 10, 'player');
+      this._enemies = this.game.add.group();
+      this._enemies.create(200, 250, 'enemy');
+      this._enemies.create(750, 300, 'enemy');
+
       this.map = this.game.add.tilemap('tilemap');
       this.map.addTilesetImage('patrones', 'tiles');
 
@@ -195,10 +199,8 @@ var PlayScene = {
       this._player.animations.add('jump', Phaser.Animation.generateFrameNames('rush_jump',2,2,'',2),0,false);
       this.configure();
 
-      /*
-        Code for the pause menu
-      */
-
+      // Code for the pause menu
+     
       this.pause = this.game.add.text(0, 0, 'Pause', {font: '30px Sniglet', fill: '#fff' });
       this.pause.inputEnabled = true;
       this.pause.fixedToCamera = true;
@@ -245,12 +247,12 @@ var PlayScene = {
                 var choise = Math.floor(x / 90) + 3*Math.floor(y / 90);
 
                 // Display the choice
-                //this.choiseLabel.text = 'You chose menu item: ' + choisemap[choise];
+                this.choiseLabel.text = 'You chose menu item: ' + choisemap[choise];
             }
             else{
                 // Remove the menu and the label
-                //this.menu.destroy();
-                //this.choiseLabel.destroy();
+                this.menu.destroy();
+                this.choiseLabel.destroy();
 
                 // Unpause the game
                 this.game.paused = false;
@@ -265,8 +267,7 @@ var PlayScene = {
         var collisionWithTilemap = this.game.physics.arcade.collide(this._player, this.groundLayer);
         var movement = this.GetMovement();
         //transitions
-        switch(this._playerState)
-        {
+        switch(this._playerState) {
             case PlayerState.STOP:
             case PlayerState.RUN:
                 if(this.isJumping(collisionWithTilemap)){
@@ -287,7 +288,6 @@ var PlayScene = {
                 break;
                 
             case PlayerState.JUMP:
-                
                 var currentJumpHeight = this._player.y - this._initialJumpHeight;
                 this._playerState = (currentJumpHeight*currentJumpHeight < this._jumpHight*this._jumpHight)
                     ? PlayerState.JUMP : PlayerState.FALLING;
@@ -307,8 +307,7 @@ var PlayScene = {
                 break;     
         }
         //States
-        switch(this._playerState){
-                
+        switch(this._playerState) {
             case PlayerState.STOP:
                 moveDirection.x = 0;
                 break;
@@ -332,8 +331,7 @@ var PlayScene = {
                 break;    
         }
         //movement
-        this.movement(moveDirection,5,
-                      this.backgroundLayer.layer.widthInPixels*this.backgroundLayer.scale.x - 10);
+        this.movement(moveDirection, 5, this.backgroundLayer.layer.widthInPixels*this.backgroundLayer.scale.x - 10);
         this.checkPlayerFell();
     },
     
@@ -343,7 +341,6 @@ var PlayScene = {
     },
     
     onPlayerFell: function(){
-        //TODO 6 Carga de 'gameOver';
         this.game.state.start('gameOver');
     },
     
@@ -380,12 +377,17 @@ var PlayScene = {
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         this.game.stage.backgroundColor = '#a9f0ff';
         this.game.physics.arcade.enable(this._player);
+
+        //this.game.physics.arcade.enable(this._enemies);
         
         this._player.body.bounce.y = 0.2;
         this._player.body.gravity.y = 20000;
         this._player.body.gravity.x = 0;
         this._player.body.velocity.x = 0;
         this.game.camera.follow(this._player);
+
+        //this._enemies.body.bounce.y = 0.2;
+        //this._enemies.body.gravity.y = 20000;
     },
     //move the player
     movement: function(point, xMin, xMax){
@@ -395,8 +397,7 @@ var PlayScene = {
             this._player.body.velocity.x = 0;
 
     },
-    
-    //TODO 9 destruir los recursos tilemap, tiles y logo.
+
     OnEndPlayState: function () {
         this.game.world.setBounds(0, 0, 800, 600);
         this.tilemap.destroy();
