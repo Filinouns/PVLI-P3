@@ -1,3 +1,152 @@
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+
+},{}],2:[function(require,module,exports){
+var GameOver = {
+    create: function () {
+        console.log("Game Over");
+        var button = this.game.add.button(400, 300, 
+                                          'button', 
+                                          this.actionOnClick, 
+                                          this, 2, 1, 0);
+        button.anchor.set(0.5);
+        var goText = this.game.add.text(400, 100, "GameOver");
+        var text = this.game.add.text(0, 0, "Reset Game");
+        text.anchor.set(0.5);
+        goText.anchor.set(0.5);
+        button.addChild(text);
+        
+        //TODO 8 crear un boton con el texto 'Return Main Menu' que nos devuelva al menu del juego.
+        var returnButton = this.game.add.button(400, 200, 'button', this.goMenu, this, 2, 1, 0);
+        returnButton.anchor.set(0.5);
+
+        var returnMenuText = this.game.add.text(0, 0, 'Return Main Menu');
+        returnMenuText.font = 'Sniglet';
+        returnMenuText.anchor.set(0.5);
+        returnButton.addChild(returnMenuText);
+    },
+    
+    //TODO 7 declarar el callback del boton.
+    goMenu: function () {
+        this.game.state.start('menu');
+    },
+
+    actionOnClick: function () {
+        this.game.state.start('play');
+    }
+};
+
+module.exports = GameOver;
+},{}],3:[function(require,module,exports){
+'use strict';
+
+var PlayScene = require('./play_scene');
+var GameOver = require('./gameover_scene');
+var MenuScene = require('./menu_scene');
+var FightScene = require('./fight_scene');
+
+var BootScene = {
+  preload: function () {
+    // load here assets required for the loading screen
+    this.game.load.image('preloader_bar', 'images/preloader_bar.png');
+    this.game.load.spritesheet('button', 'images/buttons.png', 168, 70);
+    this.game.load.image('logo', 'images/phaser.png');
+  },
+
+  create: function () {
+      this.game.state.start('preloader');
+      this.game.state.start('menu');
+  }
+};
+
+var PreloaderScene = {
+  preload: function () {
+    this.loadingBar = this.game.add.sprite(100,300, 'preloader_bar');
+    this.loadingBar.anchor.setTo(0, 0.5); 
+    this.game.load.setPreloadSprite(this.loadingBar);
+    this.game.stage.backgroundColor = "#000000";
+    
+    this.load.onLoadStart.add(this.loadStart, this);
+
+    this.game.load.image('menu', 'images/menu.jpg');
+    this.game.load.tilemap('tilemap', 'images/map.json', null, Phaser.Tilemap.TILED_JSON);
+    this.game.load.image('tiles', 'images/simples_pimples.png');
+    this.game.load.atlas('rush', 'images/rush_spritesheet.png', 'images/rush_spritesheet.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+
+    this.load.onLoadComplete.add(this.loadComplete, this);
+  },
+
+  loadStart: function () {
+    console.log("Game Assets Loading ...");
+  },
+
+  loadComplete: function() {
+    this.ready = true;
+    this.game.state.start('play');
+    console.log('Game assets ready!');
+  }, 
+    
+  update: function(){
+    this._loadingBar
+  }
+};
+
+var wfconfig = {
+  //El metodo que invoca Google Font al terminar de cargar la fuente
+    active: function() { 
+        console.log("font loaded");
+        init(); //Llamada al metodo de creacion de phaser
+    },
+ 
+    google: {
+        families: ['Sniglet'] //La fuente o fuentes a cargar
+    }
+};
+ 
+//TODO 3.2 Cargar Google font cuando la página esté cargada con wfconfig.
+window.onload = function () {
+  WebFont.load(wfconfig);
+};
+
+window.init = function () {
+  var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
+
+  game.state.add('boot', BootScene);
+  game.state.add('menu', MenuScene);
+  game.state.add('preloader', PreloaderScene);
+  game.state.add('play', PlayScene);
+  game.state.add('gameOver', GameOver);
+  game.state.add('fightScene', FightScene);
+
+  game.state.start('boot');
+};
+
+},{"./fight_scene":1,"./gameover_scene":2,"./menu_scene":4,"./play_scene":5}],4:[function(require,module,exports){
+var MenuScene = {
+    create: function () {
+        this.game.world.setBounds(0, 0, 800, 600);
+        var logo = this.game.add.sprite(this.game.world.centerX, 
+                                        this.game.world.centerY, 
+                                        'logo');
+        logo.anchor.setTo(0.5, 0.5);
+        var buttonStart = this.game.add.button(this.game.world.centerX, 
+                                               this.game.world.centerY, 
+                                               'button', 
+                                               this.actionOnClick, 
+                                               this, 2, 1, 0);
+        buttonStart.anchor.set(0.5);
+        var textStart = this.game.add.text(0, 0, "Start");
+        textStart.font = 'Sniglet';
+        textStart.anchor.set(0.5);
+        buttonStart.addChild(textStart);
+    },
+    
+    actionOnClick: function(){
+        this.game.state.start('preloader');
+    } 
+};
+
+module.exports = MenuScene;
+},{}],5:[function(require,module,exports){
 'use strict';
 
 //Enumerados: PlayerState son los estado por los que pasa el player. Directions son las direcciones a las que se puede
@@ -256,3 +405,5 @@ var PlayScene = {
 };
 
 module.exports = PlayScene;
+
+},{}]},{},[3]);
