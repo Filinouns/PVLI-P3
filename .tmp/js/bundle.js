@@ -218,9 +218,9 @@ var PlayScene = {
         this.choiseLabel = this.game.add.text(800/2, 450, 'Click outside menu to continue', { font: 'Sniglet', fill: '#fff' });
         this.choiseLabel.anchor.setTo(0.5, 0.5);
 
-        this.game.input.onDown.add(unpause, self);
+        this.game.input.onDown.add(this.unpause, self);
+        //this.game.addEventListener("click", this.unpause, true);
       },this);
-
 
       // And finally the method that handels the pause menu
       function unpause(event) {
@@ -229,7 +229,7 @@ var PlayScene = {
         console.log('Estoy en el "unpause"');
         var w = 800, h = 600;
         // Only act if paused (this.game.paused)
-        if(true) {
+        if(this.game.paused) {
             // Calculate the corners of the menu
             var x1 = w/2 - 270/2, x2 = w/2 + 270/2,
                 y1 = h/2 - 180/2, y2 = h/2 + 180/2;
