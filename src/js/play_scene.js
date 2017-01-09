@@ -58,51 +58,53 @@ var PlayScene = {
 
       this.pause.events.onInputUp.add(function () {
         this.game.paused = true;
-        this.menu = this.game.add.sprite(this.game.camera.x + 325, this.game.camera.y + 250, 'menu');
+        this.menu = this.game.add.sprite(this.game.camera.x + 325, this.game.camera.y + 250, 'menu'); //Esta x e y a ojo
         this.menu.anchor.setTo(0.3, 0.3);
 
-        console.log('SELF: ' + self);
-        console.log('THIS: ' + this);
-
-        // A label to illustrate which menu item was chosen. (This is not necessary)
-        this.choiseLabel = this.game.add.text(800/2, 450, 'Click outside menu to continue', { font: 'Sniglet', fill: '#fff' });
-        this.choiseLabel.anchor.setTo(0.5, 0.5);
+        this.continuetx = this.game.add.text(this.menu.x - 110, this.menu.y - 15, "Continuar", {font: '30px Sniglet', fill: '#ff0044'});
+        this.restarttx = this.game.add.text(this.menu.x - 110, this.menu.y + 25, "Reiniciar", {font: '30px Sniglet', fill: '#ff0044'});
+        this.exittx = this.game.add.text(this.menu.x - 110, this.menu.y + 65, "Salir", {font: '30px Sniglet', fill: '#ff0044'});
 
         this.game.input.onDown.add(unpause, this);
-        //this.game.addEventListener("click", this.unpause, true);
       },this);
 
       // And finally the method that handels the pause menu
       function unpause(event) {
-      	// No se le pasa ningun dato a la funcion en el "event" ademas creo que cuando se hace el 'this.game.pause = true' provoca que todos los elementos del juego se destruyan
-      	// porque no hay manera de acceder a 'choiseLabel' y 'menu'.
-        console.log('Estoy en el "unpause"');
         var w = 800, h = 600;
         // Only act if paused (this.game.paused)
         if(this.game.paused) {
             // Calculate the corners of the menu
-            var x1 = w/2 - 270/2, x2 = w/2 + 270/2,
-                y1 = h/2 - 180/2, y2 = h/2 + 180/2;
+            var x1 = w/2 - 480/2, x2 = w/2 + 480/2, //El valor de la division es el tamaño de la imagen para el menu
+                y1 = h/2 - 272/2, y2 = h/2 + 272/2;
 
             // Check if the click was inside the menu
-            if(event.x > x1 && event.x < x2 && event.y > y1 && event.y < y2 ){
-                // The choicemap is an array that will help us see which item was clicked
-                var choisemap = ['one', 'two', 'three', 'four', 'five', 'six'];
-
+            if(event.x > x1 && event.x < x2 && event.y > y1 && event.y < y2){
                 // Get menu local coordinates for the click
                 var x = event.x - x1,
                     y = event.y - y1;
 
-                // Calculate the choice 
-                var choise = Math.floor(x / 90) + 3*Math.floor(y / 90);
-
-                // Display the choice
-                this.choiseLabel.text = 'You chose menu item: ' + choisemap[choise];
+                // Calculate the choice
+                if(x > 60 && y > 80 && x < 184 && y < 99){ //Continue
+                	this.menu.destroy();
+                	this.continuetx.destroy();
+                	this.restarttx.destroy();
+                	this.exittx.destroy();
+            	    this.game.paused = false;
+                } else if (x > 60 && y > 117 && x < 166 && y < 137){ //Restart level
+                	this.game.paused = false;
+                	this.game.state.start('play');
+                } else if (x > 60 && y > 155 && x < 113 && y < 180) { //Restart
+                	this.game.paused = false;
+                	this.game.state.start('menu');
+                }
             }
             else{
                 // Remove the menu and the label
                 this.menu.destroy();
                 this.choiseLabel.destroy();
+                this.continuetx.destroy();
+                this.restarttx.destroy();
+                this.exittx.destroy();
 
                 // Unpause the game
                 this.game.paused = false;
