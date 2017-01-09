@@ -58,7 +58,7 @@ var PlayScene = {
 
       this.pause.events.onInputUp.add(function () {
         this.game.paused = true;
-        this.menu = this.game.add.sprite(350, 250, 'menu');
+        this.menu = this.game.add.sprite(this.game.camera.x + 325, this.game.camera.y + 250, 'menu');
         this.menu.anchor.setTo(0.3, 0.3);
 
         console.log('SELF: ' + self);
@@ -68,7 +68,7 @@ var PlayScene = {
         this.choiseLabel = this.game.add.text(800/2, 450, 'Click outside menu to continue', { font: 'Sniglet', fill: '#fff' });
         this.choiseLabel.anchor.setTo(0.5, 0.5);
 
-        this.game.input.onDown.add(this.unpause, self);
+        this.game.input.onDown.add(unpause, this);
         //this.game.addEventListener("click", this.unpause, true);
       },this);
 
