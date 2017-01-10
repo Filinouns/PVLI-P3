@@ -4,7 +4,6 @@
 //mover el player.
 var PlayerState = {'JUMP':0, 'RUN':1, 'FALLING':2, 'STOP':3, 'FIGHT':4}
 var Direction = {'LEFT':0, 'RIGHT':1, 'NONE':3}
-var Enemies;
 
 //Scena de juego.
 var PlayScene = {
@@ -14,16 +13,38 @@ var PlayScene = {
     _jumpHight: 150, //altura máxima del salto.
     _playerState: PlayerState.STOP, //estado del player
     _direction: Direction.NONE,  //dirección inicial del player. NONE es ninguna dirección.
-    _enemies:  Enemies,
+    _enemy1: {},
 
   //Método constructor...
   create: function () {
       //Creamos al player con un sprite por defecto.
       this._player = this.game.add.sprite(10, 10, 'player');
-      this._enemies = this.game.add.group();
-      this._enemies.create(200, 250, 'enemy');
-      this._enemies.create(750, 300, 'enemy');
 
+      //Creamos a los enemigos en un grupo con fisicas activadas por defecto.
+      this._enemy1 = this.game.add.sprite(200, 250, 'enemy');
+      /*this._enemies = this.game.add.physicsGroup(Phaser.Physics.ARCADE);
+      this._enemies.create(200, 250, 'enemy');
+      this._enemies.create(750, 300, 'enemy');*/
+
+      //Textos de dialogos
+      this.text1 = this.game.add.text(100, 100, 'Probando shit', {font: '30px Sniglet', fill: '#fff' }); //tx enemigo1
+      this.text1.visible = false;
+      this.text2 = this.game.add.text(100, 100, 'Probando shit', {font: '30px Sniglet', fill: '#fff' }); //tx enemigo2
+      this.text2.visible = false;
+      this.text3 = this.game.add.text(100, 100, 'Probando shit', {font: '30px Sniglet', fill: '#fff' }); //tx enemigo3
+      this.text3.visible = false;
+      this.text4 = this.game.add.text(100, 100, 'Probando shit', {font: '30px Sniglet', fill: '#fff' }); //tx enemigo4
+      this.text4.visible = false;
+      this.text5 = this.game.add.text(100, 100, 'Probando shit', {font: '30px Sniglet', fill: '#fff' }); //tx enemigo5
+      this.text5.visible = false;
+      this.text6 = this.game.add.text(100, 100, 'Probando shit', {font: '30px Sniglet', fill: '#fff' }); //tx enemigo6
+      this.text6.visible = false;
+      this.text7 = this.game.add.text(100, 100, 'Probando shit', {font: '30px Sniglet', fill: '#fff' }); //tx enemigo7
+      this.text7.visible = false;
+      this.text8 = this.game.add.text(100, 100, 'Probando shit', {font: '30px Sniglet', fill: '#fff' }); //tx colega
+      this.text8.visible = false;
+
+      //Creacion e implementacion del tilemap
       this.map = this.game.add.tilemap('tilemap');
       this.map.addTilesetImage('patrones', 'tiles');
 
@@ -50,7 +71,6 @@ var PlayScene = {
       this.configure();
 
       // Code for the pause menu
-     
       this.pause = this.game.add.text(0, 0, 'Pause', {font: '30px Sniglet', fill: '#fff' });
       this.pause.inputEnabled = true;
       this.pause.fixedToCamera = true;
@@ -61,9 +81,9 @@ var PlayScene = {
         this.menu = this.game.add.sprite(this.game.camera.x + 325, this.game.camera.y + 250, 'menu'); //Esta x e y a ojo
         this.menu.anchor.setTo(0.3, 0.3);
 
-        this.continuetx = this.game.add.text(this.menu.x - 110, this.menu.y - 15, "Continuar", {font: '30px Sniglet', fill: '#ff0044'});
-        this.restarttx = this.game.add.text(this.menu.x - 110, this.menu.y + 25, "Reiniciar", {font: '30px Sniglet', fill: '#ff0044'});
-        this.exittx = this.game.add.text(this.menu.x - 110, this.menu.y + 65, "Salir", {font: '30px Sniglet', fill: '#ff0044'});
+        this.continuetx = this.game.add.text(this.menu.x - 110, this.menu.y - 15, 'Continuar', {font: '30px Sniglet', fill: '#ff0044'});
+        this.restarttx = this.game.add.text(this.menu.x - 110, this.menu.y + 25, 'Reiniciar', {font: '30px Sniglet', fill: '#ff0044'});
+        this.exittx = this.game.add.text(this.menu.x - 110, this.menu.y + 65, 'Salir', {font: '30px Sniglet', fill: '#ff0044'});
 
         this.game.input.onDown.add(unpause, this);
       },this);
@@ -101,7 +121,6 @@ var PlayScene = {
             else{
                 // Remove the menu and the label
                 this.menu.destroy();
-                this.choiseLabel.destroy();
                 this.continuetx.destroy();
                 this.restarttx.destroy();
                 this.exittx.destroy();
@@ -113,11 +132,21 @@ var PlayScene = {
       }
     },
     
+    /* ---------------------------------------------------------------UPDATE-----------------------------------------------------------*/
+
     //IS called one per frame.
     update: function () {
         var moveDirection = new Phaser.Point(0, 0);
         var collisionWithTilemap = this.game.physics.arcade.collide(this._player, this.groundLayer);
+        var collisionWithTilemap1 = this.game.physics.arcade.collide(this._enemy1, this.groundLayer);
         var movement = this.GetMovement();
+
+        if(this._player.x > 100 && this._player.x < 200){
+        	this.text1.visible = true;
+        } else {
+        	this.text1.visible = false;
+        }
+
         //transitions
         switch(this._playerState) {
             case PlayerState.STOP:
@@ -187,7 +216,6 @@ var PlayScene = {
         this.checkPlayerFell();
     },
     
-    
     canJump: function(collisionWithTilemap){
         return this.isStanding() && collisionWithTilemap || this._jamping;
     },
@@ -229,8 +257,6 @@ var PlayScene = {
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         this.game.stage.backgroundColor = '#a9f0ff';
         this.game.physics.arcade.enable(this._player);
-
-        //this.game.physics.arcade.enable(this._enemies);
         
         this._player.body.bounce.y = 0.2;
         this._player.body.gravity.y = 20000;
@@ -238,8 +264,9 @@ var PlayScene = {
         this._player.body.velocity.x = 0;
         this.game.camera.follow(this._player);
 
-        //this._enemies.body.bounce.y = 0.2;
-        //this._enemies.body.gravity.y = 20000;
+		this.game.physics.arcade.enable(this._enemy1);
+        this._enemy1.body.bounce.y = 0.2;
+        this._enemy1.body.gravity.y = 20000;
     },
     //move the player
     movement: function(point, xMin, xMax){
@@ -247,7 +274,6 @@ var PlayScene = {
         
         if((this._player.x < xMin && point.x < 0)|| (this._player.x > xMax && point.x > 0))
             this._player.body.velocity.x = 0;
-
     },
 
     OnEndPlayState: function () {

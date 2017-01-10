@@ -64,7 +64,6 @@ var wfconfig = {
     }
 };
  
-//TODO 3.2 Cargar Google font cuando la página esté cargada con wfconfig.
 window.onload = function () {
   WebFont.load(wfconfig);
 };
