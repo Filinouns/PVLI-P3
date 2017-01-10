@@ -4,6 +4,8 @@
 //mover el player.
 var PlayerState = {'JUMP':0, 'RUN':1, 'FALLING':2, 'STOP':3, 'FIGHT':4}
 var Direction = {'LEFT':0, 'RIGHT':1, 'NONE':3}
+var playerPos = {x: 10, y: 10};
+var enemyFighted = 0;
 
 //Scena de juego.
 var PlayScene = {
@@ -13,36 +15,21 @@ var PlayScene = {
     _jumpHight: 150, //altura máxima del salto.
     _playerState: PlayerState.STOP, //estado del player
     _direction: Direction.NONE,  //dirección inicial del player. NONE es ninguna dirección.
+    _fightNumber: enemyFighted,
     _enemy1: {},
+    _enemy2: {},
 
   //Método constructor...
   create: function () {
       //Creamos al player con un sprite por defecto.
-      this._player = this.game.add.sprite(10, 10, 'player');
+      this._player = this.game.add.sprite(playerPos.x, playerPos.y, 'player');
 
       //Creamos a los enemigos en un grupo con fisicas activadas por defecto.
       this._enemy1 = this.game.add.sprite(200, 250, 'enemy');
+      this._enemy2 = this.game.add.sprite(1050, 250, 'enemy');
       /*this._enemies = this.game.add.physicsGroup(Phaser.Physics.ARCADE);
       this._enemies.create(200, 250, 'enemy');
       this._enemies.create(750, 300, 'enemy');*/
-
-      //Textos de dialogos
-      this.text1 = this.game.add.text(100, 100, 'Probando shit', {font: '30px Sniglet', fill: '#fff' }); //tx enemigo1
-      this.text1.visible = false;
-      this.text2 = this.game.add.text(100, 100, 'Probando shit', {font: '30px Sniglet', fill: '#fff' }); //tx enemigo2
-      this.text2.visible = false;
-      this.text3 = this.game.add.text(100, 100, 'Probando shit', {font: '30px Sniglet', fill: '#fff' }); //tx enemigo3
-      this.text3.visible = false;
-      this.text4 = this.game.add.text(100, 100, 'Probando shit', {font: '30px Sniglet', fill: '#fff' }); //tx enemigo4
-      this.text4.visible = false;
-      this.text5 = this.game.add.text(100, 100, 'Probando shit', {font: '30px Sniglet', fill: '#fff' }); //tx enemigo5
-      this.text5.visible = false;
-      this.text6 = this.game.add.text(100, 100, 'Probando shit', {font: '30px Sniglet', fill: '#fff' }); //tx enemigo6
-      this.text6.visible = false;
-      this.text7 = this.game.add.text(100, 100, 'Probando shit', {font: '30px Sniglet', fill: '#fff' }); //tx enemigo7
-      this.text7.visible = false;
-      this.text8 = this.game.add.text(100, 100, 'Probando shit', {font: '30px Sniglet', fill: '#fff' }); //tx colega
-      this.text8.visible = false;
 
       //Creacion e implementacion del tilemap
       this.map = this.game.add.tilemap('tilemap');
@@ -111,9 +98,15 @@ var PlayScene = {
                 	this.exittx.destroy();
             	    this.game.paused = false;
                 } else if (x > 60 && y > 117 && x < 166 && y < 137){ //Restart level
+                  this._fightNumber = 0;
+                  this._player.x = 10;
+                  this._player.y = 10;
                 	this.game.paused = false;
                 	this.game.state.start('play');
                 } else if (x > 60 && y > 155 && x < 113 && y < 180) { //Restart
+                  this._fightNumber = 0;
+                  this._player.x = 10;
+                  this._player.y = 10;
                 	this.game.paused = false;
                 	this.game.state.start('menu');
                 }
@@ -140,12 +133,6 @@ var PlayScene = {
         var collisionWithTilemap = this.game.physics.arcade.collide(this._player, this.groundLayer);
         var collisionWithTilemap1 = this.game.physics.arcade.collide(this._enemy1, this.groundLayer);
         var movement = this.GetMovement();
-
-        if(this._player.x > 100 && this._player.x < 200){
-        	this.text1.visible = true;
-        } else {
-        	this.text1.visible = false;
-        }
 
         //transitions
         switch(this._playerState) {
@@ -214,6 +201,26 @@ var PlayScene = {
         //movement
         this.movement(moveDirection, 5, this.backgroundLayer.layer.widthInPixels*this.backgroundLayer.scale.x - 10);
         this.checkPlayerFell();
+        this.distanceEnemy(this._fightNumber);
+    },
+
+    //Funcion que utilizamos para guardar estas variables al cambiar de un state a otro.
+    shutdown: function() {
+      playerPos.x = this._player.x;
+      playerPos.y = this._player.y;
+
+      enemyFighted = this._fightNumber;
+    },
+
+    //Funciones para el cambio de escena con los enemigos, no se hacerlo todo en una asique habra varias (bastante feote)
+    distanceEnemy: function(x){
+      if(this._player.x < this._enemy1.x && this._player.x > this._enemy1.x - 100 && x == 0){
+        this._fightNumber++;
+        this.game.state.start('fight');
+      } else if (this._player.x < this._enemy2.x && this._player.x > this._enemy2.x - 100 && x == 1) {
+        this._fightNumber++;
+        this.game.state.start('fight');
+      }
     },
     
     canJump: function(collisionWithTilemap){
@@ -221,7 +228,10 @@ var PlayScene = {
     },
     
     onPlayerFell: function(){
-        this.game.state.start('gameOver');
+      this._fightNumber = 0;
+      this._player.x = 10;
+      this._player.y = 10;
+      this.game.state.start('gameOver');
     },
     
     checkPlayerFell: function(){

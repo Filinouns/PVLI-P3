@@ -76,7 +76,7 @@ window.init = function () {
   game.state.add('preloader', PreloaderScene);
   game.state.add('play', PlayScene);
   game.state.add('gameOver', GameOver);
-  game.state.add('fightScene', FightScene);
+  game.state.add('fight', FightScene);
 
   game.state.start('boot');
 };
