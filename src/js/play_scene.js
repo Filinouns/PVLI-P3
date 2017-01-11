@@ -18,11 +18,13 @@ var PlayScene = {
     _fightNumber: enemyFighted,
     _enemy1: {},
     _enemy2: {},
+    _prueba: {}, //No se usa normalmente
 
   //Método constructor...
   create: function () {
       //Creamos al player con un sprite por defecto.
       this._player = this.game.add.sprite(playerPos.x, playerPos.y, 'player');
+      this._prueba = this.game.add.sprite(30, 10, 'player_fight');
 
       //Creamos a los enemigos en un grupo con fisicas activadas por defecto.
       this._enemy1 = this.game.add.sprite(200, 250, 'enemy');

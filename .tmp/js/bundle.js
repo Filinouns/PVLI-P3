@@ -1,38 +1,137 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var FightScene = {
-	create: function() {
-	  //Textos de dialogos
-      this.text1 = this.game.add.text(100, 100, 'Probando shit', {font: '30px Sniglet', fill: '#fff' }); //tx enemigo1
-      this.text1.visible = false;
-      this.text2 = this.game.add.text(100, 100, 'Probando shit', {font: '30px Sniglet', fill: '#fff' }); //tx enemigo2
-      this.text2.visible = false;
-      this.text3 = this.game.add.text(100, 100, 'Probando shit', {font: '30px Sniglet', fill: '#fff' }); //tx enemigo3
-      this.text3.visible = false;
-      this.text4 = this.game.add.text(100, 100, 'Probando shit', {font: '30px Sniglet', fill: '#fff' }); //tx enemigo4
-      this.text4.visible = false;
-      this.text5 = this.game.add.text(100, 100, 'Probando shit', {font: '30px Sniglet', fill: '#fff' }); //tx enemigo5
-      this.text5.visible = false;
-      this.text6 = this.game.add.text(100, 100, 'Probando shit', {font: '30px Sniglet', fill: '#fff' }); //tx enemigo6
-      this.text6.visible = false;
-      this.text7 = this.game.add.text(100, 100, 'Probando shit', {font: '30px Sniglet', fill: '#fff' }); //tx enemigo7
-      this.text7.visible = false;
-      this.text8 = this.game.add.text(100, 100, 'Probando shit', {font: '30px Sniglet', fill: '#fff' }); //tx colega
-      this.text8.visible = false;
+'use strict';
 
-		console.log ('fight scene');
+var fightStage = 0;
+
+var FightScene = {
+	_enemy: {},
+	_enemyPet: {},
+	_player: {},
+	_playerPet: {},
+	_buddy: {},
+	_fightNumber: fightStage,
+
+	create: function() {
+		this.fightText = this.game.add.text(this.game.centerX, this.game.centerY, 'FIGHT!', {font: '30px Sniglet', fill: '#fff' });
+		this.fightText.visible = false;
+		var spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+		spaceKey.onDown.add(this.onSpacePress, this);
+
+		// FightNumber
+		switch(this._fightNumber) {
+            case 0:
+            	//Creamos las imagenes necesarias
+            	this.text1 = this.game.add.text(500, 100, 'Bienvenido al sistema de combate de "Mountain Meeting Tales!"', {font: '30px Sniglet', fill: '#fff' }); //tx enemigo1
+            	this.text1_1 = this.game.add.text(500, 100, 'Blablabla', {font: '30px Sniglet', fill: '#fff' });
+            	this.text1_1.visible = false;
+            	this._player = this.game.add.sprite(10, 10, 'player_fight');
+            	this._playerPet = this.game.add.sprite(10, 300, 'playerPet1');
+            	this._playerPet.visible = false;
+            	this._enemy = this.game.add.sprite(500, 10, 'enemy_fight');
+            	this._enemyPet = this.game.add.sprite(500, 300, 'enemyPet1');
+            	this._enemyPet.visible = false;
+
+            	//Iniciamos las variables necesarias
+            	this._playerPet.hp = 100;
+            	this._enemyPet.hp = 100;
+
+            	break;
+            case 1:
+                this.text2 = this.game.add.text(100, 100, 'Probando shit', {font: '30px Sniglet', fill: '#fff' }); //tx enemigo2
+    			this.text2.visible = true;
+
+                break;
+            case 2:
+                
+                break;
+            case 3:
+                
+                break;     
+        }
+
+		//Textos de dialogos
+    	this.text3 = this.game.add.text(100, 100, 'Probando shit', {font: '30px Sniglet', fill: '#fff' }); //tx enemigo3
+    	this.text3.visible = false;
+    	this.text4 = this.game.add.text(100, 100, 'Probando shit', {font: '30px Sniglet', fill: '#fff' }); //tx enemigo4
+    	this.text4.visible = false;
+    	this.text5 = this.game.add.text(100, 100, 'Probando shit', {font: '30px Sniglet', fill: '#fff' }); //tx enemigo5
+    	this.text5.visible = false;
+    	this.text6 = this.game.add.text(100, 100, 'Probando shit', {font: '30px Sniglet', fill: '#fff' }); //tx enemigo6
+    	this.text6.visible = false;
+    	this.text7 = this.game.add.text(100, 100, 'Probando shit', {font: '30px Sniglet', fill: '#fff' }); //tx enemigo7
+    	this.text7.visible = false;
+    	this.text8 = this.game.add.text(100, 100, 'Probando shit', {font: '30px Sniglet', fill: '#fff' }); //tx colega
+    	this.text8.visible = false;
+
+		console.log ('Fight scene');
 		this.game.stage.backgroundColor = "#56b24d";
-		var button = this.game.add.button(400, 300, 'button', this.actionOnClick, this, 2, 1, 0);
+
+		//Boton Temporal
+		var button = this.game.add.button(100, 550, 'button', this.actionOnClick, this, 2, 1, 0);
         button.anchor.set(0.5);
         var text = this.game.add.text(0, 0, "Volver al play");
         text.anchor.set(0.5);
         button.addChild(text);
+
+        //Botones de ataque y defensa
+        var buttonAtq = this.game.add.button(280, 550, 'button', this.actionOnAttack, this, 2, 1, 0);
+        buttonAtq.anchor.set(0.5);
+        var attText = this.game.add.text(0, 0, 'Atacar');
+        attText.anchor.set(0.5);
+        buttonAtq.addChild(attText);
+
+        var buttonDef = this.game.add.button(460, 550, 'button', this.actionOnDefense, this, 2, 1, 0);
+        buttonDef.anchor.set(0.5);
+        var defText = this.game.add.text(0, 0, 'Defense');
+        defText.anchor.set(0.5);
+        buttonDef.addChild(defText);
 	},
 
-	shutdown: function() {
+	update: function () {
+		
+	},
+
+	shutdown: function () {
+		fightStage = this._fightNumber;
+	},
+
+	onSpacePress: function () {
+		console.log('Espacio pulsado!');
+		switch(this._fightNumber) {
+            case 0:
+            	if(this.text1.visible){
+            		this.text1.visible = false;
+            		this.text1_1.visible = true;
+            	} else if (this.text1_1.visible) {
+            		this.text1_1.visible = false;
+            		this.fightText = true;
+            		this._playerPet.visible = true;
+            		this._enemyPet.visible = true;
+            	}
+
+            	break;
+            case 1:
+
+                break;
+            case 2:
+                
+                break;
+            case 3:
+                
+                break;
+        }
+	},
+
+	actionOnDefense: function () {
 
 	},
 
-	actionOnClick: function(){
+	actionOnAttack: function () {
+
+	},
+
+	actionOnClick: function () {
+		this._fightNumber++;
 		this.game.state.start('play');
 	}
 };
@@ -100,11 +199,18 @@ var PreloaderScene = {
     
     this.load.onLoadStart.add(this.loadStart, this);
 
+    //Imagenes para el play_scene
     this.game.load.image('menu', 'images/menu.jpg');
     this.game.load.tilemap('tilemap', 'images/map.json', null, Phaser.Tilemap.TILED_JSON);
     this.game.load.image('tiles', 'images/simples_pimples.png');
     this.game.load.atlas('player', 'images/rush_spritesheet.png', 'images/rush_spritesheet.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
     this.game.load.atlas('enemy', 'images/enemy.png', 'images/rush_spritesheet.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+
+    //Imagenes para el fight_scene
+    this.game.load.atlas('player_fight', 'images/player_fight.png', 'images/rush_spritesheet.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+    this.game.load.atlas('playerPet1', 'images/playerPet.png', 'images/rush_spritesheet.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+    this.game.load.atlas('enemy_fight', 'images/enemy_fight.png', 'images/rush_spritesheet.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+    this.game.load.atlas('enemyPet1', 'images/enemyPet.png', 'images/rush_spritesheet.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
 
     this.load.onLoadComplete.add(this.loadComplete, this);
   },
@@ -200,11 +306,13 @@ var PlayScene = {
     _fightNumber: enemyFighted,
     _enemy1: {},
     _enemy2: {},
+    _prueba: {}, //No se usa normalmente
 
   //Método constructor...
   create: function () {
       //Creamos al player con un sprite por defecto.
       this._player = this.game.add.sprite(playerPos.x, playerPos.y, 'player');
+      this._prueba = this.game.add.sprite(30, 10, 'player_fight');
 
       //Creamos a los enemigos en un grupo con fisicas activadas por defecto.
       this._enemy1 = this.game.add.sprite(200, 250, 'enemy');
