@@ -214,7 +214,7 @@ var PlayScene = {
       enemyFighted = this._fightNumber;
     },
 
-    //Funciones para el cambio de escena con los enemigos, no se hacerlo todo en una asique habra varias (bastante feote)
+    //Funciones para el cambio de escena con los enemigos
     distanceEnemy: function(x){
       if(this._player.x < this._enemy1.x && this._player.x > this._enemy1.x - 100 && x == 0){
         this._fightNumber++;
@@ -284,7 +284,7 @@ var PlayScene = {
     movement: function(point, xMin, xMax){
         this._player.body.velocity = point;// * this.game.time.elapseTime;
         
-        if((this._player.x < xMin && point.x < 0)|| (this._player.x > xMax && point.x > 0))
+        if((this._player.x < xMin && point.x < 0) || (this._player.x > xMax && point.x > 0))
             this._player.body.velocity.x = 0;
     },
 

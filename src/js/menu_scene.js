@@ -18,10 +18,6 @@ var MenuScene = {
     },
     
     actionOnClick: function(){
-        console.log('100 % 15 = ' + (100%15));
-        console.log('100 % 10 = ' + (100%10));
-        console.log('100 % 5 = ' + (100%5));
-        console.log('100 % 50 = ' + (100%50));
         this.game.state.start('preloader');
     } 
 };
