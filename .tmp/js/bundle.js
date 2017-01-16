@@ -308,8 +308,8 @@ var PreloaderScene = {
 
     //Imagenes para el play_scene
     this.game.load.image('menu', 'images/menu.jpg');
-    this.game.load.tilemap('tilemap', 'images/map.json', null, Phaser.Tilemap.TILED_JSON);
-    this.game.load.image('tiles', 'images/simples_pimples.png');
+    this.game.load.tilemap('tilemap', 'images/MMT/map.json', null, Phaser.Tilemap.TILED_JSON);
+    this.game.load.image('tiles', 'images/MMT/Tiles.png');
     this.game.load.atlas('player', 'images/rush_spritesheet.png', 'images/rush_spritesheet.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
     this.game.load.atlas('enemy', 'images/enemy.png', 'images/rush_spritesheet.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
 
@@ -417,9 +417,43 @@ var PlayScene = {
 
   //Método constructor...
   create: function () {
-      //Creamos al player con un sprite por defecto.
+      //Creacion e implementacion del tilemap
+      this.map = this.game.add.tilemap('tilemap');
+      this.map.addTilesetImage('patrones', 'tiles');
+
+      //Creacion de las layers
+      this.backgroundLayer = this.map.createLayer('Paisaje');
+      this.pared = this.map.createLayer('Pared');
       this._player = this.game.add.sprite(playerPos.x, playerPos.y, 'player');
-      this._prueba = this.game.add.sprite(30, 10, 'player_fight');
+      this.columnas = this.map.createLayer('Columnas');
+      this.groundLayer = this.map.createLayer('Suelo');
+      this.arboles = this.map.createLayer('Arboles');
+      // Layers de plano de muerte y enemigos
+      this.death = this.map.createLayer('Muerte');
+      this.enemies = this.map.createLayer('Enemigos');
+      //Colisiones con el plano de muerte y con el plano de muerte y con suelo.
+      this.map.setCollisionBetween(1, 5000, true, 'Muerte');
+      this.map.setCollisionBetween(1, 5000, true, 'Suelo');
+      this.death.visible = false;
+      this.enemies.visible = false;
+      //Cambia la escala a x3.
+      /*this.groundLayer.setScale(3,3);
+      this.backgroundLayer.setScale(3,3);
+      this.death.setScale(3,3);*/
+
+      this.backgroundLayer.resizeWorld();
+      this.groundLayer.resizeWorld();
+      this.columnas.resizeWorld();
+      this.arboles.resizeWorld();
+      this.pared.resizeWorld();
+      this.death.resizeWorld();
+      this.enemies.resizeWorld();
+
+      //this.groundLayer.resizeWorld(); //resize world and adjust to the screen
+
+      //Creamos al player con un sprite por defecto.
+      
+      //this._prueba = this.game.add.sprite(30, 10, 'player_fight');
 
       //Creamos a los enemigos en un grupo con fisicas activadas por defecto.
       this._enemy1 = this.game.add.sprite(200, 250, 'enemy');
@@ -427,26 +461,6 @@ var PlayScene = {
       /*this._enemies = this.game.add.physicsGroup(Phaser.Physics.ARCADE);
       this._enemies.create(200, 250, 'enemy');
       this._enemies.create(750, 300, 'enemy');*/
-
-      //Creacion e implementacion del tilemap
-      this.map = this.game.add.tilemap('tilemap');
-      this.map.addTilesetImage('patrones', 'tiles');
-
-      //Creacion de las layers
-      this.backgroundLayer = this.map.createLayer('BackgroundLayer');
-      this.groundLayer = this.map.createLayer('GroundLayer');
-      //plano de muerte
-      this.death = this.map.createLayer('Death');
-      //Colisiones con el plano de muerte y con el plano de muerte y con suelo.
-      this.map.setCollisionBetween(1, 5000, true, 'Death');
-      this.map.setCollisionBetween(1, 5000, true, 'GroundLayer');
-      this.death.visible = false;
-      //Cambia la escala a x3.
-      this.groundLayer.setScale(3,3);
-      this.backgroundLayer.setScale(3,3);
-      this.death.setScale(3,3);
-      
-      //this.groundLayer.resizeWorld(); //resize world and adjust to the screen
       
       //nombre de la animación, frames, framerate, isloop
       this._player.animations.add('run', Phaser.Animation.generateFrameNames('rush_run',1,5,'',2),10,true);
@@ -598,7 +612,7 @@ var PlayScene = {
         //movement
         this.movement(moveDirection, 5, this.backgroundLayer.layer.widthInPixels*this.backgroundLayer.scale.x - 10);
         this.checkPlayerFell();
-        this.distanceEnemy(this._fightNumber);
+        //this.distanceEnemy(this._fightNumber);
     },
 
     //Funcion que utilizamos para guardar estas variables al cambiar de un state a otro.

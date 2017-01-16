@@ -30,8 +30,8 @@ var PreloaderScene = {
 
     //Imagenes para el play_scene
     this.game.load.image('menu', 'images/menu.jpg');
-    this.game.load.tilemap('tilemap', 'images/map.json', null, Phaser.Tilemap.TILED_JSON);
-    this.game.load.image('tiles', 'images/simples_pimples.png');
+    this.game.load.tilemap('tilemap', 'images/MMT/map.json', null, Phaser.Tilemap.TILED_JSON);
+    this.game.load.image('tiles', 'images/MMT/Tiles.png');
     this.game.load.atlas('player', 'images/rush_spritesheet.png', 'images/rush_spritesheet.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
     this.game.load.atlas('enemy', 'images/enemy.png', 'images/rush_spritesheet.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
 
