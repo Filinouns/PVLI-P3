@@ -60,8 +60,8 @@ var PlayScene = {
       this.enemies.resizeWorld();
 
       //Creamos a los enemigos en un grupo con fisicas activadas por defecto.
-      this._enemy1 = this.game.add.sprite(450, 50, 'enemy');
-      this._enemy2 = this.game.add.sprite(1050, 250, 'enemy');
+      this._enemy1 = this.game.add.sprite(450, 185, 'enemy');
+      this._enemy2 = this.game.add.sprite(1050, 325, 'enemy');
       this._enemy3 = this.game.add.sprite(650, 620, 'enemy');
       this._enemy4 = this.game.add.sprite(450, 810, 'enemy');
       this._enemy5 = this.game.add.sprite(1650, 810, 'enemy');
@@ -229,7 +229,7 @@ var PlayScene = {
         //movement
         this.movement(moveDirection, 5, this.backgroundLayer.layer.widthInPixels*this.backgroundLayer.scale.x - 10);
         this.checkPlayerFell();
-        this.distanceEnemy(this._fightNumber);
+        //this.distanceEnemy(this._fightNumber);
     },
 
     //Funcion que utilizamos para guardar estas variables al cambiar de un state a otro.
@@ -319,11 +319,12 @@ var PlayScene = {
     //configure the scene
     configure: function(){
         //Start the Arcade Physics systems
-        this.game.world.setBounds(0, 0, 3200, 1200);
+        this.game.world.setBounds(0, 0, 3168, 1200);
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         this.game.stage.backgroundColor = '#a9f0ff';
         this.game.physics.arcade.enable(this._player);
         
+        this._player.body.collideWorldBounds = true;
         this._player.body.bounce.y = 0.2;
         this._player.body.gravity.y = 20000;
         this._player.body.gravity.x = 0;
