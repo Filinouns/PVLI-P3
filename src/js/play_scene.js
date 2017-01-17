@@ -18,6 +18,9 @@ var PlayScene = {
     _fightNumber: enemyFighted,
     _enemy1: {},
     _enemy2: {},
+    _enemy3: {},
+    _enemy4: {},
+    _enemy5: {},
     _prueba: {}, //No se usa normalmente
 
   //Método constructor...
@@ -29,14 +32,15 @@ var PlayScene = {
       //Creacion de las layers
       this.backgroundLayer = this.map.createLayer('Paisaje');
       this.pared = this.map.createLayer('Pared');
+      this.columnas = this.map.createLayer('Columnas');
       //Creamos al player con un sprite por defecto. (lo creamos aqui para que las layers que se añaden despues queden por delante delñ player).
       this._player = this.game.add.sprite(playerPos.x, playerPos.y, 'player');
-      this.columnas = this.map.createLayer('Columnas');
       this.groundLayer = this.map.createLayer('Suelo');
       this.arboles = this.map.createLayer('Arboles');
       // Layers de plano de muerte y enemigos
       this.death = this.map.createLayer('Muerte');
       this.enemies = this.map.createLayer('Enemigos');
+      this.enemies.visible = true;
       //Colisiones con el plano de muerte y con el plano de muerte y con suelo.
       this.map.setCollisionBetween(1, 5000, true, 'Muerte');
       this.map.setCollisionBetween(1, 5000, true, 'Suelo');
@@ -55,15 +59,13 @@ var PlayScene = {
       this.death.resizeWorld();
       this.enemies.resizeWorld();
 
-      //this.groundLayer.resizeWorld(); //resize world and adjust to the screen
-
-      
-      
-      //this._prueba = this.game.add.sprite(30, 10, 'player_fight');
-
       //Creamos a los enemigos en un grupo con fisicas activadas por defecto.
-      this._enemy1 = this.game.add.sprite(200, 250, 'enemy');
+      this._enemy1 = this.game.add.sprite(450, 50, 'enemy');
       this._enemy2 = this.game.add.sprite(1050, 250, 'enemy');
+      this._enemy3 = this.game.add.sprite(650, 620, 'enemy');
+      this._enemy4 = this.game.add.sprite(450, 810, 'enemy');
+      this._enemy5 = this.game.add.sprite(1650, 810, 'enemy');
+      this._boss = this.game.add.sprite(2600, 10, 'enemy');
       /*this._enemies = this.game.add.physicsGroup(Phaser.Physics.ARCADE);
       this._enemies.create(200, 250, 'enemy');
       this._enemies.create(750, 300, 'enemy');*/
@@ -148,7 +150,12 @@ var PlayScene = {
     update: function () {
         var moveDirection = new Phaser.Point(0, 0);
         var collisionWithTilemap = this.game.physics.arcade.collide(this._player, this.groundLayer);
-        var collisionWithTilemap1 = this.game.physics.arcade.collide(this._enemy1, this.groundLayer);
+        var colenmy1 = this.game.physics.arcade.collide(this._enemy1, this.groundLayer, this.collision(colenmy1));
+        var colenmy2 = this.game.physics.arcade.collide(this._enemy2, this.groundLayer, this.collision(colenmy2));
+        var colenmy3 = this.game.physics.arcade.collide(this._enemy3, this.groundLayer, this.collision(colenmy3));
+        var colenmy4 = this.game.physics.arcade.collide(this._enemy4, this.groundLayer, this.collision(colenmy4));
+        var colenmy5 = this.game.physics.arcade.collide(this._enemy5, this.groundLayer, this.collision(colenmy5));
+        var colboss = this.game.physics.arcade.collide(this._boss, this.groundLayer, this.collision(colboss));
         var movement = this.GetMovement();
 
         //transitions
@@ -174,8 +181,12 @@ var PlayScene = {
                 
             case PlayerState.JUMP:
                 var currentJumpHeight = this._player.y - this._initialJumpHeight;
-                this._playerState = (currentJumpHeight*currentJumpHeight < this._jumpHight*this._jumpHight)
-                    ? PlayerState.JUMP : PlayerState.FALLING;
+                if((currentJumpHeight*currentJumpHeight < this._jumpHight*this._jumpHight) && !collisionWithTilemap){
+                    this._playerState = PlayerState.JUMP;
+                }
+                else {
+                  this._playerState = PlayerState.FALLING;
+                }
                 break;
                 
             case PlayerState.FALLING:
@@ -204,7 +215,7 @@ var PlayScene = {
                     if(this._player.scale.x < 0)
                         this._player.scale.x *= -1;
                 }
-                else{
+                else if (movement === Direction.LEFT){
                     moveDirection.x = -this._speed;
                     if(this._player.scale.x > 0)
                         this._player.scale.x *= -1; 
@@ -218,7 +229,7 @@ var PlayScene = {
         //movement
         this.movement(moveDirection, 5, this.backgroundLayer.layer.widthInPixels*this.backgroundLayer.scale.x - 10);
         this.checkPlayerFell();
-        //this.distanceEnemy(this._fightNumber);
+        this.distanceEnemy(this._fightNumber);
     },
 
     //Funcion que utilizamos para guardar estas variables al cambiar de un state a otro.
@@ -229,13 +240,41 @@ var PlayScene = {
       enemyFighted = this._fightNumber;
     },
 
+    collision: function(aux) {
+      if(aux == this.colenmy1) {
+        this._enemy1.body.blocked.down;
+      } else if (aux == this.colenmy2) {
+        this._enemy2.body.blocked.down;
+      } else if (aux == this.colenmy3) {
+        this._enemy3.body.blocked.down;
+      } else if (aux == this.colenmy4) {
+        this._enemy4.body.blocked.down;
+      } else if (aux == this.colenmy5) {
+        this._enemy5.body.blocked.down;
+      } else if (aux == this.colboss) {
+        this._boss.body.blocked.down;
+      }
+    },
+
     //Funciones para el cambio de escena con los enemigos
-    distanceEnemy: function(x){
-      if(this._player.x < this._enemy1.x && this._player.x > this._enemy1.x - 100 && x == 0){
-        this._fightNumber++;
+    distanceEnemy: function(aux){
+      if(this._player.x < this._enemy1.x && this._player.x > this._enemy1.x - 100 && aux == 0){
+        this._fightNumber = 1;
         this.game.state.start('fight');
-      } else if (this._player.x < this._enemy2.x && this._player.x > this._enemy2.x - 100 && x == 1) {
-        this._fightNumber++;
+      } else if (this._player.x < this._enemy2.x && this._player.x > this._enemy2.x - 100 && aux == 1) {
+        this._fightNumber = 2;
+        this.game.state.start('fight');
+      } else if (this._player.x < this._enemy3.x + 100 && this._player.x > this._enemy3.x && aux == 2) {
+        this._fightNumber = 3;
+        this.game.state.start('fight');
+      } else if (this._player.x < this._enemy4.x && this._player.x > this._enemy4.x - 100 && aux == 3 && this._player.y + 100 > this._enemy4.y) {
+        this._fightNumber = 4;
+        this.game.state.start('fight');
+      } else if (this._player.x < this._enemy5.x && this._player.x > this._enemy5.x - 100 && aux == 4) {
+        this._fightNumber = 5;
+        this.game.state.start('fight');
+      } else if (this._player.x < this._boss.x && this._player.x > this._boss.x - 100 && aux == 5) {
+        this._fightNumber = 0;
         this.game.state.start('fight');
       }
     },
@@ -280,7 +319,7 @@ var PlayScene = {
     //configure the scene
     configure: function(){
         //Start the Arcade Physics systems
-        this.game.world.setBounds(0, 0, 2400, 160);
+        this.game.world.setBounds(0, 0, 3200, 1200);
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         this.game.stage.backgroundColor = '#a9f0ff';
         this.game.physics.arcade.enable(this._player);
@@ -291,9 +330,25 @@ var PlayScene = {
         this._player.body.velocity.x = 0;
         this.game.camera.follow(this._player);
 
-		this.game.physics.arcade.enable(this._enemy1);
+        //Fisicas para los enemigos
+		    this.game.physics.arcade.enable(this._enemy1);
         this._enemy1.body.bounce.y = 0.2;
-        this._enemy1.body.gravity.y = 20000;
+        this._enemy1.body.gravity.y = 2000;
+        this.game.physics.arcade.enable(this._enemy2);
+        this._enemy2.body.bounce.y = 0.2;
+        this._enemy2.body.gravity.y = 2000;
+        this.game.physics.arcade.enable(this._enemy3);
+        this._enemy3.body.bounce.y = 0.2;
+        this._enemy3.body.gravity.y = 2000;
+        this.game.physics.arcade.enable(this._enemy4);
+        this._enemy4.body.bounce.y = 0.2;
+        this._enemy4.body.gravity.y = 2000;
+        this.game.physics.arcade.enable(this._enemy5);
+        this._enemy5.body.bounce.y = 0.2;
+        this._enemy5.body.gravity.y = 2000;
+        this.game.physics.arcade.enable(this._boss);
+        this._boss.body.bounce.y = 0.2;
+        this._boss.body.gravity.y = 2000;
     },
     //move the player
     movement: function(point, xMin, xMax){

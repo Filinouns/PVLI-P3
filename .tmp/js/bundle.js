@@ -8,6 +8,7 @@ var fightStage = 0;
 var initialHp = 100;
 var initialArmor = 0;
 var clicks = 0;
+var style = {font: '30px Sniglet', fill: '#fff', boundsAlignH: 'center', boundsAlignV: 'middle' };
 
 var FightScene = {
 	_tutorial: false,
@@ -48,33 +49,37 @@ var FightScene = {
 		var random = this.getRandomArbitrary(0, 10);
 
 		if (random >= 0 && random < 1){
-			return this.game.add.text(100, 100, 'Tienes la esperanza de llegar al otro lado? \n Menudo novato', {font: '30px Sniglet', fill: '#fff' });
+			return this.game.add.text(100, 100, 'Tienes la esperanza de llegar al otro lado? \n Menudo novato', style);
 		} else if (random >= 1 && random < 2) {
-			return this.game.add.text(100, 100, '¿Crees que puedes pasar por encima mio?', {font: '30px Sniglet', fill: '#fff' });
+			return this.game.add.text(100, 100, '¿Crees que puedes pasar por encima mio?', style);
 		} else if (random >= 2 && random < 3) {
-			return this.game.add.text(100, 100, 'Esos compañeros que tienes no \n te ayudaran en esta batalla', {font: '30px Sniglet', fill: '#fff' });
+			return this.game.add.text(100, 100, 'Esos compañeros que tienes no \n te ayudaran en esta batalla', style);
 		} else if (random >= 3 && random < 4) {
-			return this.game.add.text(100, 100, 'Mmmmm que buena pinta tienen esos bocatas, Damelos!', {font: '30px Sniglet', fill: '#fff' });
+			return this.game.add.text(100, 100, 'Mmmmm que buena pinta tienen esos bocatas,\n Damelos!', style);
 		} else if (random >= 4 && random < 5) {
-			return this.game.add.text(100, 100, 'Sere el único que llege al otro lado de la montaña', {font: '30px Sniglet', fill: '#fff' });
+			return this.game.add.text(100, 100, 'Sere el único que llege \n al otro lado de la montaña', style);
 		} else if (random >= 5 && random < 6) {
-			return this.game.add.text(100, 100, 'Bocatas, bocatas, bocatas, bocataaaaaas!!', {font: '30px Sniglet', fill: '#fff' });
+			return this.game.add.text(100, 100, 'Bocatas, bocatas, bocatas, bocataaaaaas!!', style);
 		} else if (random >= 6 && random < 7) {
-			return this.game.add.text(100, 100, 'Tengo hambre, dame esos bocatas ahora!', {font: '30px Sniglet', fill: '#fff' });
+			return this.game.add.text(100, 100, 'Llevo 3 dias sin comer...\n dame algun bocata porfavor... \n aaagg estos no son comestibles \n ¡Maldito!', style);
 		} else if (random >= 7 && random < 8) {
-			return this.game.add.text(100, 100, 'Si fueras listo habrias vuelto con mami hace tiempo', {font: '30px Sniglet', fill: '#fff' });
+			return this.game.add.text(100, 100, 'Si fueras listo habrias vuelto \n con mami hace tiempo', style);
 		} else {
-			return this.game.add.text(100, 100, 'Solo hay 3 cosas infinitas: el universo,\n la ustupidez humana \n y las ganas que tengo de quedarme esos bocatas', {font: '30px Sniglet', fill: '#fff' });
+			return this.game.add.text(100, 100, 'Solo hay 3 cosas infinitas: el universo,\n la ustupidez humana \n y las ganas que tengo de quedarme esos bocatas', style);
 		}
+	},
+
+	bossText: function () {
+		return this.game.add.text(100, 100, 'Al fin has llegado Jonny \n llevo esperandote horas', style);
 	},
 
 	create: function () {
 		this.game.stage.backgroundColor = "#56b24d";
 
 		// Texto para el inicio de combate
-		this.fightText = this.game.add.text(300, 100, 'FIGHT!', {font: '30px Sniglet', fill: '#fff' });
+		this.fightText = this.game.add.text(300, 100, 'FIGHT!', style);
 		this.fightText.visible = false;
-		this.textSpace = this.game.add.text(300, 450, 'Presiona "Espacio" para continuar', {font: '15px Sniglet', fill: '#fff' });
+		this.textSpace = this.game.add.text(275, 450, 'Presiona "Espacio" para continuar', {font: '15px Sniglet', fill: '#fff', boundsAlignH: 'center', boundsAlignV: 'middle' });
 
 		// Variable para detectar cuando se pulsa el espacio
 		var spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -84,7 +89,7 @@ var FightScene = {
 		switch(this._fightNumber) {
             case 0:
             	//Creamos las imagenes necesarias
-            	this.text = this.game.add.text(175, 100, 'Bienvenido al sistema de combate \n de Mountain Meeting Tales', {font: '30px Sniglet', fill: '#fff' });
+            	this.text = this.game.add.text(175, 100, 'Bienvenido al sistema de combate \n de Mountain Meeting Tales', style);
             	this._player = this.game.add.sprite(10, 10, 'player_fight');
             	this._playerPet = this.game.add.sprite(10, 300, 'playerPet1');
             	this._playerPet.visible = false;
@@ -94,6 +99,22 @@ var FightScene = {
             	break;
             case 1:
                 this.text = this.dialogos();
+                this.enemyPet();
+                break;
+            case 2:
+                this.text = this.dialogos();
+                this.enemyPet();
+                break;
+            case 3:
+                this.text = this.dialogos();
+                this.enemyPet();
+                break;
+            case 4:
+                this.text = this.dialogos();
+                this.enemyPet();
+                break;
+            case 5: //Boss
+                this.text = this.bossText();
                 this.enemyPet();
                 break;
         }
@@ -170,6 +191,20 @@ var FightScene = {
 		}
 	},
 
+	finalText: function () {
+		switch (clicks) {
+			case 0:
+				this.text.setText('Anda pasa esos bocatas que tenia unas ganas ya...');
+				break;
+			case 1:
+				this.text.setText('Vas a pelear contra mi por la mejor ración');
+				break;
+			case 2:
+				this.text.setText('Y si no te gusta aprende a \n llegar antes la proxima vez!');
+				break;
+		}
+	},
+
 	onSpacePress: function () {
 		switch(this._fightNumber) {
             case 0:
@@ -182,11 +217,34 @@ var FightScene = {
             		this.fightText.visible = true;
             		this.text.visible = false;
             		this.textSpace.visible = false;
+            		clicks = 0;
             	}
             	break;
             case 1:
             	this.text.visible = false;
             	this.textSpace.visible = false;
+                break;
+            case 2:
+            	this.text.visible = false;
+            	this.textSpace.visible = false;
+                break;
+            case 3:
+            	this.text.visible = false;
+            	this.textSpace.visible = false;
+                break;
+            case 4:
+            	this.text.visible = false;
+            	this.textSpace.visible = false;
+                break;
+            case 5: //Boss
+            	if (clicks <= 2){
+            		this.finalText();
+            		clicks++;
+            	} else {
+            		clicks = 0;
+            		this.text.visible = false;
+            		this.textSpace.visible = false;
+            	}
                 break;
         }
 	},
@@ -215,8 +273,15 @@ var FightScene = {
 
 	enemyAttack: function () {
 		var random = this.getRandomArbitrary(0, 3);
-		if (random < 2) { //Ataca
-			this._playerPet.hp = this._playerPet.hp - (10 - this._playerPet.armor);
+		if (random < 2) { //Ataque de mascotas normales
+			if (this._fightNumber < 5) {
+				this._playerPet.hp = this._playerPet.hp - (10 - this._playerPet.armor);
+			} else { //Ataque del boss
+				this._playerPet.hp = this._playerPet.hp - (11 - this._playerPet.armor);
+				if (random < 0.4) {
+					this._enemyPet.armor++;
+				}
+			}
 		} else if (random >= 2) {
 			if (this._enemyPet.armor < 5) {
 				this._enemyPet.armor++;
@@ -226,17 +291,32 @@ var FightScene = {
 		}
 	},
 
-	finalBossAttack: function () {
-
-	},
-
 	actionOnDefeat: function () {
-		this._fightNumber = 1;
 		this.game.state.start('fight');
 	},
 
 	actionOnVictory: function () {
-		this._fightNumber = 1;
+		switch(this._fightNumber) {
+			case 0: 
+				this._fightNumber = 1;
+				break;
+			case 1: 
+				this._fightNumber = 2;
+				break;
+			case 2: 
+				this._fightNumber = 3;
+				break;
+			case 3: 
+				this._fightNumber = 4;
+				break;
+			case 4: 
+				this._fightNumber = 5;
+				break;
+			case 5: 
+				this._fightNumber = 0;
+				break;
+		}
+
 		this._initialHp = 100;
 		this._initialArmor = 0;
 		this.game.state.start('play');
@@ -413,6 +493,9 @@ var PlayScene = {
     _fightNumber: enemyFighted,
     _enemy1: {},
     _enemy2: {},
+    _enemy3: {},
+    _enemy4: {},
+    _enemy5: {},
     _prueba: {}, //No se usa normalmente
 
   //Método constructor...
@@ -424,13 +507,15 @@ var PlayScene = {
       //Creacion de las layers
       this.backgroundLayer = this.map.createLayer('Paisaje');
       this.pared = this.map.createLayer('Pared');
-      this._player = this.game.add.sprite(playerPos.x, playerPos.y, 'player');
       this.columnas = this.map.createLayer('Columnas');
+      //Creamos al player con un sprite por defecto. (lo creamos aqui para que las layers que se añaden despues queden por delante delñ player).
+      this._player = this.game.add.sprite(playerPos.x, playerPos.y, 'player');
       this.groundLayer = this.map.createLayer('Suelo');
       this.arboles = this.map.createLayer('Arboles');
       // Layers de plano de muerte y enemigos
       this.death = this.map.createLayer('Muerte');
       this.enemies = this.map.createLayer('Enemigos');
+      this.enemies.visible = true;
       //Colisiones con el plano de muerte y con el plano de muerte y con suelo.
       this.map.setCollisionBetween(1, 5000, true, 'Muerte');
       this.map.setCollisionBetween(1, 5000, true, 'Suelo');
@@ -449,15 +534,13 @@ var PlayScene = {
       this.death.resizeWorld();
       this.enemies.resizeWorld();
 
-      //this.groundLayer.resizeWorld(); //resize world and adjust to the screen
-
-      //Creamos al player con un sprite por defecto.
-      
-      //this._prueba = this.game.add.sprite(30, 10, 'player_fight');
-
       //Creamos a los enemigos en un grupo con fisicas activadas por defecto.
-      this._enemy1 = this.game.add.sprite(200, 250, 'enemy');
+      this._enemy1 = this.game.add.sprite(450, 50, 'enemy');
       this._enemy2 = this.game.add.sprite(1050, 250, 'enemy');
+      this._enemy3 = this.game.add.sprite(650, 620, 'enemy');
+      this._enemy4 = this.game.add.sprite(450, 810, 'enemy');
+      this._enemy5 = this.game.add.sprite(1650, 810, 'enemy');
+      this._boss = this.game.add.sprite(2600, 10, 'enemy');
       /*this._enemies = this.game.add.physicsGroup(Phaser.Physics.ARCADE);
       this._enemies.create(200, 250, 'enemy');
       this._enemies.create(750, 300, 'enemy');*/
@@ -542,7 +625,12 @@ var PlayScene = {
     update: function () {
         var moveDirection = new Phaser.Point(0, 0);
         var collisionWithTilemap = this.game.physics.arcade.collide(this._player, this.groundLayer);
-        var collisionWithTilemap1 = this.game.physics.arcade.collide(this._enemy1, this.groundLayer);
+        var colenmy1 = this.game.physics.arcade.collide(this._enemy1, this.groundLayer, this.collision(colenmy1));
+        var colenmy2 = this.game.physics.arcade.collide(this._enemy2, this.groundLayer, this.collision(colenmy2));
+        var colenmy3 = this.game.physics.arcade.collide(this._enemy3, this.groundLayer, this.collision(colenmy3));
+        var colenmy4 = this.game.physics.arcade.collide(this._enemy4, this.groundLayer, this.collision(colenmy4));
+        var colenmy5 = this.game.physics.arcade.collide(this._enemy5, this.groundLayer, this.collision(colenmy5));
+        var colboss = this.game.physics.arcade.collide(this._boss, this.groundLayer, this.collision(colboss));
         var movement = this.GetMovement();
 
         //transitions
@@ -568,8 +656,12 @@ var PlayScene = {
                 
             case PlayerState.JUMP:
                 var currentJumpHeight = this._player.y - this._initialJumpHeight;
-                this._playerState = (currentJumpHeight*currentJumpHeight < this._jumpHight*this._jumpHight)
-                    ? PlayerState.JUMP : PlayerState.FALLING;
+                if((currentJumpHeight*currentJumpHeight < this._jumpHight*this._jumpHight) && !collisionWithTilemap){
+                    this._playerState = PlayerState.JUMP;
+                }
+                else {
+                  this._playerState = PlayerState.FALLING;
+                }
                 break;
                 
             case PlayerState.FALLING:
@@ -598,7 +690,7 @@ var PlayScene = {
                     if(this._player.scale.x < 0)
                         this._player.scale.x *= -1;
                 }
-                else{
+                else if (movement === Direction.LEFT){
                     moveDirection.x = -this._speed;
                     if(this._player.scale.x > 0)
                         this._player.scale.x *= -1; 
@@ -612,7 +704,7 @@ var PlayScene = {
         //movement
         this.movement(moveDirection, 5, this.backgroundLayer.layer.widthInPixels*this.backgroundLayer.scale.x - 10);
         this.checkPlayerFell();
-        //this.distanceEnemy(this._fightNumber);
+        this.distanceEnemy(this._fightNumber);
     },
 
     //Funcion que utilizamos para guardar estas variables al cambiar de un state a otro.
@@ -623,13 +715,41 @@ var PlayScene = {
       enemyFighted = this._fightNumber;
     },
 
+    collision: function(aux) {
+      if(aux == this.colenmy1) {
+        this._enemy1.body.blocked.down;
+      } else if (aux == this.colenmy2) {
+        this._enemy2.body.blocked.down;
+      } else if (aux == this.colenmy3) {
+        this._enemy3.body.blocked.down;
+      } else if (aux == this.colenmy4) {
+        this._enemy4.body.blocked.down;
+      } else if (aux == this.colenmy5) {
+        this._enemy5.body.blocked.down;
+      } else if (aux == this.colboss) {
+        this._boss.body.blocked.down;
+      }
+    },
+
     //Funciones para el cambio de escena con los enemigos
-    distanceEnemy: function(x){
-      if(this._player.x < this._enemy1.x && this._player.x > this._enemy1.x - 100 && x == 0){
-        this._fightNumber++;
+    distanceEnemy: function(aux){
+      if(this._player.x < this._enemy1.x && this._player.x > this._enemy1.x - 100 && aux == 0){
+        this._fightNumber = 1;
         this.game.state.start('fight');
-      } else if (this._player.x < this._enemy2.x && this._player.x > this._enemy2.x - 100 && x == 1) {
-        this._fightNumber++;
+      } else if (this._player.x < this._enemy2.x && this._player.x > this._enemy2.x - 100 && aux == 1) {
+        this._fightNumber = 2;
+        this.game.state.start('fight');
+      } else if (this._player.x < this._enemy3.x + 100 && this._player.x > this._enemy3.x && aux == 2) {
+        this._fightNumber = 3;
+        this.game.state.start('fight');
+      } else if (this._player.x < this._enemy4.x && this._player.x > this._enemy4.x - 100 && aux == 3 && this._player.y + 100 > this._enemy4.y) {
+        this._fightNumber = 4;
+        this.game.state.start('fight');
+      } else if (this._player.x < this._enemy5.x && this._player.x > this._enemy5.x - 100 && aux == 4) {
+        this._fightNumber = 5;
+        this.game.state.start('fight');
+      } else if (this._player.x < this._boss.x && this._player.x > this._boss.x - 100 && aux == 5) {
+        this._fightNumber = 0;
         this.game.state.start('fight');
       }
     },
@@ -674,7 +794,7 @@ var PlayScene = {
     //configure the scene
     configure: function(){
         //Start the Arcade Physics systems
-        this.game.world.setBounds(0, 0, 2400, 160);
+        this.game.world.setBounds(0, 0, 3200, 1200);
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         this.game.stage.backgroundColor = '#a9f0ff';
         this.game.physics.arcade.enable(this._player);
@@ -685,9 +805,25 @@ var PlayScene = {
         this._player.body.velocity.x = 0;
         this.game.camera.follow(this._player);
 
-		this.game.physics.arcade.enable(this._enemy1);
+        //Fisicas para los enemigos
+		    this.game.physics.arcade.enable(this._enemy1);
         this._enemy1.body.bounce.y = 0.2;
-        this._enemy1.body.gravity.y = 20000;
+        this._enemy1.body.gravity.y = 2000;
+        this.game.physics.arcade.enable(this._enemy2);
+        this._enemy2.body.bounce.y = 0.2;
+        this._enemy2.body.gravity.y = 2000;
+        this.game.physics.arcade.enable(this._enemy3);
+        this._enemy3.body.bounce.y = 0.2;
+        this._enemy3.body.gravity.y = 2000;
+        this.game.physics.arcade.enable(this._enemy4);
+        this._enemy4.body.bounce.y = 0.2;
+        this._enemy4.body.gravity.y = 2000;
+        this.game.physics.arcade.enable(this._enemy5);
+        this._enemy5.body.bounce.y = 0.2;
+        this._enemy5.body.gravity.y = 2000;
+        this.game.physics.arcade.enable(this._boss);
+        this._boss.body.bounce.y = 0.2;
+        this._boss.body.gravity.y = 2000;
     },
     //move the player
     movement: function(point, xMin, xMax){

@@ -7,6 +7,7 @@ var fightStage = 0;
 var initialHp = 100;
 var initialArmor = 0;
 var clicks = 0;
+var style = {font: '30px Sniglet', fill: '#fff', boundsAlignH: 'center', boundsAlignV: 'middle' };
 
 var FightScene = {
 	_tutorial: false,
@@ -47,33 +48,37 @@ var FightScene = {
 		var random = this.getRandomArbitrary(0, 10);
 
 		if (random >= 0 && random < 1){
-			return this.game.add.text(100, 100, 'Tienes la esperanza de llegar al otro lado? \n Menudo novato', {font: '30px Sniglet', fill: '#fff' });
+			return this.game.add.text(100, 100, 'Tienes la esperanza de llegar al otro lado? \n Menudo novato', style);
 		} else if (random >= 1 && random < 2) {
-			return this.game.add.text(100, 100, '¿Crees que puedes pasar por encima mio?', {font: '30px Sniglet', fill: '#fff' });
+			return this.game.add.text(100, 100, '¿Crees que puedes pasar por encima mio?', style);
 		} else if (random >= 2 && random < 3) {
-			return this.game.add.text(100, 100, 'Esos compañeros que tienes no \n te ayudaran en esta batalla', {font: '30px Sniglet', fill: '#fff' });
+			return this.game.add.text(100, 100, 'Esos compañeros que tienes no \n te ayudaran en esta batalla', style);
 		} else if (random >= 3 && random < 4) {
-			return this.game.add.text(100, 100, 'Mmmmm que buena pinta tienen esos bocatas, Damelos!', {font: '30px Sniglet', fill: '#fff' });
+			return this.game.add.text(100, 100, 'Mmmmm que buena pinta tienen esos bocatas,\n Damelos!', style);
 		} else if (random >= 4 && random < 5) {
-			return this.game.add.text(100, 100, 'Sere el único que llege al otro lado de la montaña', {font: '30px Sniglet', fill: '#fff' });
+			return this.game.add.text(100, 100, 'Sere el único que llege \n al otro lado de la montaña', style);
 		} else if (random >= 5 && random < 6) {
-			return this.game.add.text(100, 100, 'Bocatas, bocatas, bocatas, bocataaaaaas!!', {font: '30px Sniglet', fill: '#fff' });
+			return this.game.add.text(100, 100, 'Bocatas, bocatas, bocatas, bocataaaaaas!!', style);
 		} else if (random >= 6 && random < 7) {
-			return this.game.add.text(100, 100, 'Tengo hambre, dame esos bocatas ahora!', {font: '30px Sniglet', fill: '#fff' });
+			return this.game.add.text(100, 100, 'Llevo 3 dias sin comer...\n dame algun bocata porfavor... \n aaagg estos no son comestibles \n ¡Maldito!', style);
 		} else if (random >= 7 && random < 8) {
-			return this.game.add.text(100, 100, 'Si fueras listo habrias vuelto con mami hace tiempo', {font: '30px Sniglet', fill: '#fff' });
+			return this.game.add.text(100, 100, 'Si fueras listo habrias vuelto \n con mami hace tiempo', style);
 		} else {
-			return this.game.add.text(100, 100, 'Solo hay 3 cosas infinitas: el universo,\n la ustupidez humana \n y las ganas que tengo de quedarme esos bocatas', {font: '30px Sniglet', fill: '#fff' });
+			return this.game.add.text(100, 100, 'Solo hay 3 cosas infinitas: el universo,\n la ustupidez humana \n y las ganas que tengo de quedarme esos bocatas', style);
 		}
+	},
+
+	bossText: function () {
+		return this.game.add.text(100, 100, 'Al fin has llegado Jonny \n llevo esperandote horas', style);
 	},
 
 	create: function () {
 		this.game.stage.backgroundColor = "#56b24d";
 
 		// Texto para el inicio de combate
-		this.fightText = this.game.add.text(300, 100, 'FIGHT!', {font: '30px Sniglet', fill: '#fff' });
+		this.fightText = this.game.add.text(300, 100, 'FIGHT!', style);
 		this.fightText.visible = false;
-		this.textSpace = this.game.add.text(300, 450, 'Presiona "Espacio" para continuar', {font: '15px Sniglet', fill: '#fff' });
+		this.textSpace = this.game.add.text(275, 450, 'Presiona "Espacio" para continuar', {font: '15px Sniglet', fill: '#fff', boundsAlignH: 'center', boundsAlignV: 'middle' });
 
 		// Variable para detectar cuando se pulsa el espacio
 		var spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -83,7 +88,7 @@ var FightScene = {
 		switch(this._fightNumber) {
             case 0:
             	//Creamos las imagenes necesarias
-            	this.text = this.game.add.text(175, 100, 'Bienvenido al sistema de combate \n de Mountain Meeting Tales', {font: '30px Sniglet', fill: '#fff' });
+            	this.text = this.game.add.text(175, 100, 'Bienvenido al sistema de combate \n de Mountain Meeting Tales', style);
             	this._player = this.game.add.sprite(10, 10, 'player_fight');
             	this._playerPet = this.game.add.sprite(10, 300, 'playerPet1');
             	this._playerPet.visible = false;
@@ -93,6 +98,22 @@ var FightScene = {
             	break;
             case 1:
                 this.text = this.dialogos();
+                this.enemyPet();
+                break;
+            case 2:
+                this.text = this.dialogos();
+                this.enemyPet();
+                break;
+            case 3:
+                this.text = this.dialogos();
+                this.enemyPet();
+                break;
+            case 4:
+                this.text = this.dialogos();
+                this.enemyPet();
+                break;
+            case 5: //Boss
+                this.text = this.bossText();
                 this.enemyPet();
                 break;
         }
@@ -169,6 +190,20 @@ var FightScene = {
 		}
 	},
 
+	finalText: function () {
+		switch (clicks) {
+			case 0:
+				this.text.setText('Anda pasa esos bocatas que tenia unas ganas ya...');
+				break;
+			case 1:
+				this.text.setText('Vas a pelear contra mi por la mejor ración');
+				break;
+			case 2:
+				this.text.setText('Y si no te gusta aprende a \n llegar antes la proxima vez!');
+				break;
+		}
+	},
+
 	onSpacePress: function () {
 		switch(this._fightNumber) {
             case 0:
@@ -181,11 +216,34 @@ var FightScene = {
             		this.fightText.visible = true;
             		this.text.visible = false;
             		this.textSpace.visible = false;
+            		clicks = 0;
             	}
             	break;
             case 1:
             	this.text.visible = false;
             	this.textSpace.visible = false;
+                break;
+            case 2:
+            	this.text.visible = false;
+            	this.textSpace.visible = false;
+                break;
+            case 3:
+            	this.text.visible = false;
+            	this.textSpace.visible = false;
+                break;
+            case 4:
+            	this.text.visible = false;
+            	this.textSpace.visible = false;
+                break;
+            case 5: //Boss
+            	if (clicks <= 2){
+            		this.finalText();
+            		clicks++;
+            	} else {
+            		clicks = 0;
+            		this.text.visible = false;
+            		this.textSpace.visible = false;
+            	}
                 break;
         }
 	},
@@ -214,8 +272,15 @@ var FightScene = {
 
 	enemyAttack: function () {
 		var random = this.getRandomArbitrary(0, 3);
-		if (random < 2) { //Ataca
-			this._playerPet.hp = this._playerPet.hp - (10 - this._playerPet.armor);
+		if (random < 2) { //Ataque de mascotas normales
+			if (this._fightNumber < 5) {
+				this._playerPet.hp = this._playerPet.hp - (10 - this._playerPet.armor);
+			} else { //Ataque del boss
+				this._playerPet.hp = this._playerPet.hp - (11 - this._playerPet.armor);
+				if (random < 0.4) {
+					this._enemyPet.armor++;
+				}
+			}
 		} else if (random >= 2) {
 			if (this._enemyPet.armor < 5) {
 				this._enemyPet.armor++;
@@ -225,17 +290,32 @@ var FightScene = {
 		}
 	},
 
-	finalBossAttack: function () {
-
-	},
-
 	actionOnDefeat: function () {
-		this._fightNumber = 1;
 		this.game.state.start('fight');
 	},
 
 	actionOnVictory: function () {
-		this._fightNumber = 1;
+		switch(this._fightNumber) {
+			case 0: 
+				this._fightNumber = 1;
+				break;
+			case 1: 
+				this._fightNumber = 2;
+				break;
+			case 2: 
+				this._fightNumber = 3;
+				break;
+			case 3: 
+				this._fightNumber = 4;
+				break;
+			case 4: 
+				this._fightNumber = 5;
+				break;
+			case 5: 
+				this._fightNumber = 0;
+				break;
+		}
+
 		this._initialHp = 100;
 		this._initialArmor = 0;
 		this.game.state.start('play');
