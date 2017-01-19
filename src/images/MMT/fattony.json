@@ -1,0 +1,5 @@
+{"frames":{"fattony1":{"frame":{"x":0,"y":0,"w":173,"h":319},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":173,"h":319},"sourceSize":{"w":173,"h":319}},
+"fattony2":{"frame":{"x":174,"y":0,"w":166,"h":322},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":166,"h":322},"sourceSize":{"w":166,"h":322}},
+"fattony3":{"frame":{"x":0,"y":320,"w":169,"h":322},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":169,"h":322},"sourceSize":{"w":169,"h":322}},
+"fattony4":{"frame":{"x":174,"y":323,"w":159,"h":314},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":159,"h":314},"sourceSize":{"w":159,"h":314}}},
+"meta":{"app":"https://www.leshylabs.com/apps/sstool/","version":"Leshy SpriteSheet Tool v0.8.4","image":"fattony.png","size":{"w":340,"h":642},"scale":1}}

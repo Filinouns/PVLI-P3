@@ -33,13 +33,19 @@ var PreloaderScene = {
     this.game.load.tilemap('tilemap', 'images/MMT/map.json', null, Phaser.Tilemap.TILED_JSON);
     this.game.load.image('tiles', 'images/MMT/Tiles.png');
     this.game.load.atlas('player', 'images/rush_spritesheet.png', 'images/rush_spritesheet.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
-    this.game.load.atlas('enemy', 'images/enemy.png', 'images/rush_spritesheet.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+    this.game.load.atlas('enemy', 'images/MMT/robabocatas.png', 'images/MMT/robabocatas.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+    this.game.load.atlas('buddy', 'images/MMT/fattony.png', 'images/MMT/fattony.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
 
     //Imagenes para el fight_scene
     this.game.load.atlas('player_fight', 'images/player_fight.png', 'images/rush_spritesheet.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
-    this.game.load.atlas('playerPet1', 'images/playerPet.png', 'images/rush_spritesheet.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
-    this.game.load.atlas('enemy_fight', 'images/enemy_fight.png', 'images/rush_spritesheet.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
-    this.game.load.atlas('enemyPet1', 'images/enemyPet.png', 'images/rush_spritesheet.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+    this.game.load.atlas('playerPet', 'images/playerPet.png', 'images/rush_spritesheet.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+    //Imegenes de las mascotas en el fight_scene
+    this.game.load.atlas('drakePet', 'images/MMT/drake.png', 'images/MMT/drake.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+    this.game.load.atlas('chocoPet', 'images/MMT/avestruz.png', 'images/MMT/avestruz.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+    this.game.load.atlas('hippoPet', 'images/MMT/hippo.png', 'images/MMT/hippo.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+    this.game.load.atlas('rinhoPet', 'images/MMT/rinhocop.png', 'images/MMT/rhinocop.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+    this.game.load.atlas('taigerPet', 'images/MMT/taiger.png', 'images/MMT/taiger.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+    this.game.load.atlas('wolfiePet', 'images/MMT/wolfie.png', 'images/MMT/wolfie.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
 
     this.load.onLoadComplete.add(this.loadComplete, this);
   },

@@ -1,0 +1,18 @@
+{"frames":
+{"estar1":{"frame":{"x":93,"y":0,"w":39,"h":51},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":39,"h":51},"sourceSize":{"w":39,"h":51}},
+"estar2":{"frame":{"x":55,"y":0,"w":37,"h":59},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":37,"h":59},"sourceSize":{"w":37,"h":59}},
+"estar3":{"frame":{"x":93,"y":52,"w":39,"h":59},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":39,"h":59},"sourceSize":{"w":39,"h":59}},
+"estar4":{"frame":{"x":45,"y":84,"w":44,"h":50},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":44,"h":50},"sourceSize":{"w":44,"h":50}},
+"estar5":{"frame":{"x":0,"y":38,"w":54,"h":45},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":54,"h":45},"sourceSize":{"w":54,"h":45}},
+"attack1":{"frame":{"x":0,"y":84,"w":44,"h":52},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":44,"h":52},"sourceSize":{"w":44,"h":52}},
+"attack2":{"frame":{"x":0,"y":0,"w":49,"h":37},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":49,"h":37},"sourceSize":{"w":49,"h":37}},
+"attack3":{"frame":{"x":0,"y":137,"w":54,"h":35},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":54,"h":35},"sourceSize":{"w":54,"h":35}},
+"attack4":{"frame":{"x":55,"y":137,"w":65,"h":33},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":65,"h":33},"sourceSize":{"w":65,"h":33}
+}
+},"meta":{
+"app":"https://www.leshylabs.com/apps/sstool/",
+"version":"Leshy SpriteSheet Tool v0.8.4",
+"image":"taiger.png",
+"size":{"w":132,"h":172},
+"scale":1}
+}

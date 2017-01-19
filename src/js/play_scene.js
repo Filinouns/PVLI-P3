@@ -59,16 +59,36 @@ var PlayScene = {
       this.death.resizeWorld();
       this.enemies.resizeWorld();
 
-      //Creamos a los enemigos en un grupo con fisicas activadas por defecto.
+      //Creamos a los enemigos
       this._enemy1 = this.game.add.sprite(450, 185, 'enemy');
+      this._enemy1.scale.setTo(0.7, 0.7);
+      this._enemy1.scale.x *= -1;
       this._enemy2 = this.game.add.sprite(1050, 325, 'enemy');
+      this._enemy2.scale.setTo(0.7, 0.7);
+      this._enemy2.scale.x *= -1;
       this._enemy3 = this.game.add.sprite(650, 620, 'enemy');
+      this._enemy3.scale.setTo(0.7, 0.7);
       this._enemy4 = this.game.add.sprite(450, 810, 'enemy');
+      this._enemy4.scale.setTo(0.7, 0.7);
+      this._enemy4.scale.x *= -1;
       this._enemy5 = this.game.add.sprite(1650, 810, 'enemy');
-      this._boss = this.game.add.sprite(2600, 10, 'enemy');
+      this._enemy5.scale.setTo(0.7, 0.7);
+      this._enemy5.scale.x *= -1;
+      this._boss = this.game.add.sprite(2600, 250, 'buddy');
+      this._boss.scale.setTo(0.2, 0.2);
+      this._boss.scale.x *= -1;
       /*this._enemies = this.game.add.physicsGroup(Phaser.Physics.ARCADE);
       this._enemies.create(200, 250, 'enemy');
       this._enemies.create(750, 300, 'enemy');*/
+
+      // Animaciones de los enemigos
+      this._enemy1.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',2),10,true);
+      this._enemy2.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',2),10,true);
+      this._enemy3.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',2),10,true);
+      this._enemy4.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',2),10,true);
+      this._enemy5.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',2),10,true);
+      this._boss.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',2),10,true);
+      //this._enemy1.animations.play('idle'); //iniciar todas las animaciones (no se si aqui funciona)
       
       //nombre de la animación, frames, framerate, isloop
       this._player.animations.add('run', Phaser.Animation.generateFrameNames('rush_run',1,5,'',2),10,true);
@@ -229,7 +249,7 @@ var PlayScene = {
         //movement
         this.movement(moveDirection, 5, this.backgroundLayer.layer.widthInPixels*this.backgroundLayer.scale.x - 10);
         this.checkPlayerFell();
-        //this.distanceEnemy(this._fightNumber);
+        this.distanceEnemy(this._fightNumber);
     },
 
     //Funcion que utilizamos para guardar estas variables al cambiar de un state a otro.
