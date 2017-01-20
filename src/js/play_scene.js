@@ -4,7 +4,7 @@
 //mover el player.
 var PlayerState = {'JUMP':0, 'RUN':1, 'FALLING':2, 'STOP':3, 'FIGHT':4}
 var Direction = {'LEFT':0, 'RIGHT':1, 'NONE':3}
-var playerPos = {x: 2600, y: 10};
+var playerPos = {x: 10, y: 10};
 var enemyFighted = 0;
 
 //Scena de juego.
@@ -22,9 +22,14 @@ var PlayScene = {
     _enemy4: {},
     _enemy5: {},
     _prueba: {}, //No se usa normalmente
+    _music: {},
 
   //Método constructor...
   create: function () {
+      //Musica
+      this._music = this.game.add.audio('playMusic');
+      this._music.play();
+
       //Creacion e implementacion del tilemap
       this.map = this.game.add.tilemap('tilemap');
       this.map.addTilesetImage('patrones', 'tiles');
@@ -112,6 +117,7 @@ var PlayScene = {
 
       this.pause.events.onInputUp.add(function () {
         this.game.paused = true;
+        this._music.pause();
         this.menu = this.game.add.sprite(this.game.camera.x + 325, this.game.camera.y + 250, 'menu'); //Esta x e y a ojo
         this.menu.anchor.setTo(0.3, 0.3);
 
@@ -144,6 +150,7 @@ var PlayScene = {
                 	this.restarttx.destroy();
                 	this.exittx.destroy();
             	    this.game.paused = false;
+                  this._music.resume();
                 } else if (x > 60 && y > 117 && x < 166 && y < 137){ //Restart level
                   this._fightNumber = 0;
                   this._player.x = 10;
@@ -164,6 +171,7 @@ var PlayScene = {
                 this.continuetx.destroy();
                 this.restarttx.destroy();
                 this.exittx.destroy();
+                this._music.resume();
 
                 // Unpause the game
                 this.game.paused = false;
@@ -292,21 +300,27 @@ var PlayScene = {
     distanceEnemy: function(aux){
       if(this._player.x < this._enemy1.x && this._player.x > this._enemy1.x - 100 && aux == 0){
         this._fightNumber = 1;
+        this._music.pause();
         this.game.state.start('fight');
       } else if (this._player.x < this._enemy2.x && this._player.x > this._enemy2.x - 100 && aux == 1) {
         this._fightNumber = 2;
+        this._music.pause();
         this.game.state.start('fight');
       } else if (this._player.x < this._enemy3.x + 100 && this._player.x > this._enemy3.x && aux == 2) {
         this._fightNumber = 3;
+        this._music.pause();
         this.game.state.start('fight');
       } else if (this._player.x < this._enemy4.x && this._player.x > this._enemy4.x - 100 && aux == 3 && this._player.y + 100 > this._enemy4.y) {
         this._fightNumber = 4;
+        this._music.pause();
         this.game.state.start('fight');
       } else if (this._player.x < this._enemy5.x && this._player.x > this._enemy5.x - 100 && aux == 4) {
         this._fightNumber = 5;
+        this._music.pause();
         this.game.state.start('fight');
       } else if (this._player.x < this._boss.x && this._player.x > this._boss.x - 100 && aux == 5) {
         this._fightNumber = 0;
+        this._music.pause();
         this.game.state.start('fight');
       }
     },
@@ -319,6 +333,7 @@ var PlayScene = {
       this._fightNumber = 0;
       this._player.x = 10;
       this._player.y = 10;
+      this._music.pause();
       this.game.state.start('gameOver');
     },
     
@@ -395,6 +410,7 @@ var PlayScene = {
         this.game.world.setBounds(0, 0, 800, 600);
         this.tilemap.destroy();
         this.tiles.destroy();
+        this._music.pause();
     },
 
     OnFinalVictory: function () {
@@ -402,6 +418,7 @@ var PlayScene = {
         this._fightNumber = 0;
         this._player.x = 10;
         this._player.y = 10;
+        this._music.pause();
         this.game.state.start('victory');
       }
     }

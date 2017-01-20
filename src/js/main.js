@@ -12,6 +12,7 @@ var BootScene = {
     this.game.load.image('preloader_bar', 'images/preloader_bar.png');
     this.game.load.spritesheet('button', 'images/buttons.png', 168, 70);
     this.game.load.image('logo', 'images/MMT/logo.png');
+    this.game.load.audio('menuMusic', 'music/menu.ogg');
   },
 
   create: function () {
@@ -28,6 +29,10 @@ var PreloaderScene = {
     this.game.stage.backgroundColor = "#000000";
     
     this.load.onLoadStart.add(this.loadStart, this);
+
+    //Carga de la musica
+    this.game.load.audio('battleMusic', 'music/battle.ogg');
+    this.game.load.audio('playMusic', 'music/play.ogg');
 
     //Imagen para el game over y victory
     this.game.load.image('gameOver', 'images/MMT/gameover.png');

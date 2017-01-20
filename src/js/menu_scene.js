@@ -1,4 +1,6 @@
 var MenuScene = {
+    music: {},
+
     create: function () {
         this.game.world.setBounds(0, 0, 800, 600);
         var logo = this.game.add.sprite(this.game.world.centerX, 
@@ -15,10 +17,13 @@ var MenuScene = {
         textStart.font = 'Sniglet';
         textStart.anchor.set(0.5);
         buttonStart.addChild(textStart);
+        this.music = this.game.add.audio('menuMusic');
+        this.music.play();
     },
     
     actionOnClick: function(){
         this.game.state.start('preloader');
+        this.music.pause();
     } 
 };
 

@@ -23,8 +23,13 @@ var FightScene = {
 	_fightNumber: fightStage,
 	_initialHp: initialHp,
 	_initialArmor: initialArmor,
+	_music: {},
 
 	create: function () {
+		//Musica
+		this._music = this.game.add.audio('battleMusic');
+		this._music.play();
+
 		// FightNumber
 		switch(this._fightNumber) {
             case 0:
@@ -369,6 +374,7 @@ var FightScene = {
 	},
 
 	actionOnDefeat: function () {
+		this._music.pause();
 		this.game.state.start('fight');
 	},
 
@@ -398,6 +404,7 @@ var FightScene = {
 
 		this._initialHp = 100;
 		this._initialArmor = 0;
+		this._music.pause();
 		this.game.state.start('play');
 	}
 };
