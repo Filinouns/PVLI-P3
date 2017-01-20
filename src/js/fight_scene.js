@@ -33,38 +33,50 @@ var FightScene = {
             	//Creamos las imagenes necesarias
             	this.text = this.game.add.text(175, 100, 'Bienvenido al sistema de combate \n de Mountain Meeting Tales', style);
             	//this._playerPet.visible = false;
-            	this._enemy = this.game.add.sprite(750, 325, 'enemy');
+            	this._enemy = this.game.add.sprite(700, 325, 'enemy');
+            	this._enemy.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',1),5,true);
+            	this._enemy.animations.play('idle');
             	this.enemyPet();
             	break;
             case 1:
             	this.background = this.game.add.sprite(0, 0, 'fight2');
                 this.text = this.dialogos();
-                this._enemy = this.game.add.sprite(750, 325, 'enemy');
+                this._enemy = this.game.add.sprite(700, 325, 'enemy');
+                this._enemy.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',1),5,true);
+            	this._enemy.animations.play('idle');
                 this.enemyPet();
                 break;
             case 2:
             	this.background = this.game.add.sprite(0, 0, 'fight2');
                 this.text = this.dialogos();
-                this._enemy = this.game.add.sprite(750, 325, 'enemy');
+                this._enemy = this.game.add.sprite(700, 325, 'enemy');
+                this._enemy.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',1),5,true);
+            	this._enemy.animations.play('idle');
                 this.enemyPet();
                 break;
             case 3:
             	this.background = this.game.add.sprite(0, 0, 'fight2');
                 this.text = this.dialogos();
-                this._enemy = this.game.add.sprite(750, 325, 'enemy');
+                this._enemy = this.game.add.sprite(700, 325, 'enemy');
+                this._enemy.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',1),5,true);
+            	this._enemy.animations.play('idle');
                 this.enemyPet();
                 break;
             case 4:
             	this.background = this.game.add.sprite(0, 0, 'fight2');
                 this.text = this.dialogos();
-                this._enemy = this.game.add.sprite(750, 325, 'enemy');
+                this._enemy = this.game.add.sprite(700, 325, 'enemy');
+                this._enemy.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',1),5,true);
+            	this._enemy.animations.play('idle');
                 this.enemyPet();
                 break;
             case 5: //Boss
             	this.background = this.game.add.sprite(0, 0, 'fight1');
                 this.text = this.bossText();
-                this._enemy = this.game.add.sprite(750, 325, 'buddy');
+                this._enemy = this.game.add.sprite(700, 325, 'buddy');
                 this._enemy.scale.setTo(0.3, 0.3);
+                this._enemy.animations.add('idle', Phaser.Animation.generateFrameNames('fattony',1,4,'',1),5,true);
+            	this._enemy.animations.play('idle');
                 this.enemyPet();
                 break;
         }
@@ -78,11 +90,11 @@ var FightScene = {
 		var spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 		spaceKey.onDown.add(this.onSpacePress, this);
 
-        this._player = this.game.add.sprite(10, 325, 'player');
+        this._player = this.game.add.sprite(10, 340, 'player');
         this._player.scale.setTo(0.4, 0.4);
         this._player.animations.add('stop', Phaser.Animation.generateFrameNames('saltar',5,5,'',1),0,false);
         this._player.visible = false;
-        this._playerPet = this.game.add.sprite(200, 380, 'wolfiePet');
+        this._playerPet = this.game.add.sprite(200, 365, 'wolfiePet');
         this._playerPet.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',1),4,true);
         this._playerPet.visible = false;
         this._enemy.visible = false;

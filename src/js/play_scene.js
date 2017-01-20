@@ -4,7 +4,7 @@
 //mover el player.
 var PlayerState = {'JUMP':0, 'RUN':1, 'FALLING':2, 'STOP':3, 'FIGHT':4}
 var Direction = {'LEFT':0, 'RIGHT':1, 'NONE':3}
-var playerPos = {x: 10, y: 10};
+var playerPos = {x: 2600, y: 10};
 var enemyFighted = 0;
 
 //Scena de juego.
@@ -84,13 +84,19 @@ var PlayScene = {
       this._enemies.create(750, 300, 'enemy');*/
 
       // Animaciones de los enemigos
-      this._enemy1.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',2),10,true);
-      this._enemy2.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',2),10,true);
-      this._enemy3.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',2),10,true);
-      this._enemy4.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',2),10,true);
-      this._enemy5.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',2),10,true);
-      this._boss.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',2),10,true);
-      //this._enemy1.animations.play('idle'); //iniciar todas las animaciones (no se si aqui funciona)
+      this._enemy1.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',1),5,true);
+      this._enemy2.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',1),5,true);
+      this._enemy3.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',1),5,true);
+      this._enemy4.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',1),5,true);
+      this._enemy5.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',1),5,true);
+      this._boss.animations.add('idle', Phaser.Animation.generateFrameNames('fattony',1,4,'',1),5,true);
+
+      this._enemy1.animations.play('idle');
+      this._enemy2.animations.play('idle');
+      this._enemy3.animations.play('idle');
+      this._enemy4.animations.play('idle');
+      this._enemy5.animations.play('idle');
+      this._boss.animations.play('idle');
       
       //nombre de la animación, frames, framerate, isloop
       this._player.animations.add('run', Phaser.Animation.generateFrameNames('corre',1,5,'',1),10,true);
@@ -180,6 +186,9 @@ var PlayScene = {
         var colboss = this.game.physics.arcade.collide(this._boss, this.groundLayer, this.collision(colboss));
         var movement = this.GetMovement();
 
+        
+        //this._enemy2.animations.play('idle');
+
         //transitions
         switch(this._playerState) {
             case PlayerState.STOP:
@@ -252,6 +261,7 @@ var PlayScene = {
         this.movement(moveDirection, 5, this.backgroundLayer.layer.widthInPixels*this.backgroundLayer.scale.x - 10);
         this.checkPlayerFell();
         this.distanceEnemy(this._fightNumber);
+        this.OnFinalVictory();
     },
 
     //Funcion que utilizamos para guardar estas variables al cambiar de un state a otro.
@@ -385,6 +395,15 @@ var PlayScene = {
         this.game.world.setBounds(0, 0, 800, 600);
         this.tilemap.destroy();
         this.tiles.destroy();
+    },
+
+    OnFinalVictory: function () {
+      if(this._player.x > 2800) {
+        this._fightNumber = 0;
+        this._player.x = 10;
+        this._player.y = 10;
+        this.game.state.start('victory');
+      }
     }
 };
 

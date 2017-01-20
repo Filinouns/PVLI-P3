@@ -4,6 +4,7 @@ var PlayScene = require('./play_scene');
 var GameOver = require('./gameover_scene');
 var MenuScene = require('./menu_scene');
 var FightScene = require('./fight_scene');
+var VictoryScene = require('./victory_scene');
 
 var BootScene = {
   preload: function () {
@@ -28,8 +29,9 @@ var PreloaderScene = {
     
     this.load.onLoadStart.add(this.loadStart, this);
 
-    //Imagen para el game over
+    //Imagen para el game over y victory
     this.game.load.image('gameOver', 'images/MMT/gameover.png');
+    this.game.load.image('victory', 'images/MMT/victoria.png');
 
     //Imagenes para el play_scene
     this.game.load.image('menu', 'images/menu.jpg');
@@ -93,6 +95,7 @@ window.init = function () {
   game.state.add('play', PlayScene);
   game.state.add('gameOver', GameOver);
   game.state.add('fight', FightScene);
+  game.state.add('victory', VictoryScene);
 
   game.state.start('boot');
 };

@@ -34,38 +34,50 @@ var FightScene = {
             	//Creamos las imagenes necesarias
             	this.text = this.game.add.text(175, 100, 'Bienvenido al sistema de combate \n de Mountain Meeting Tales', style);
             	//this._playerPet.visible = false;
-            	this._enemy = this.game.add.sprite(750, 325, 'enemy');
+            	this._enemy = this.game.add.sprite(700, 325, 'enemy');
+            	this._enemy.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',1),5,true);
+            	this._enemy.animations.play('idle');
             	this.enemyPet();
             	break;
             case 1:
             	this.background = this.game.add.sprite(0, 0, 'fight2');
                 this.text = this.dialogos();
-                this._enemy = this.game.add.sprite(750, 325, 'enemy');
+                this._enemy = this.game.add.sprite(700, 325, 'enemy');
+                this._enemy.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',1),5,true);
+            	this._enemy.animations.play('idle');
                 this.enemyPet();
                 break;
             case 2:
             	this.background = this.game.add.sprite(0, 0, 'fight2');
                 this.text = this.dialogos();
-                this._enemy = this.game.add.sprite(750, 325, 'enemy');
+                this._enemy = this.game.add.sprite(700, 325, 'enemy');
+                this._enemy.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',1),5,true);
+            	this._enemy.animations.play('idle');
                 this.enemyPet();
                 break;
             case 3:
             	this.background = this.game.add.sprite(0, 0, 'fight2');
                 this.text = this.dialogos();
-                this._enemy = this.game.add.sprite(750, 325, 'enemy');
+                this._enemy = this.game.add.sprite(700, 325, 'enemy');
+                this._enemy.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',1),5,true);
+            	this._enemy.animations.play('idle');
                 this.enemyPet();
                 break;
             case 4:
             	this.background = this.game.add.sprite(0, 0, 'fight2');
                 this.text = this.dialogos();
-                this._enemy = this.game.add.sprite(750, 325, 'enemy');
+                this._enemy = this.game.add.sprite(700, 325, 'enemy');
+                this._enemy.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',1),5,true);
+            	this._enemy.animations.play('idle');
                 this.enemyPet();
                 break;
             case 5: //Boss
             	this.background = this.game.add.sprite(0, 0, 'fight1');
                 this.text = this.bossText();
-                this._enemy = this.game.add.sprite(750, 325, 'buddy');
+                this._enemy = this.game.add.sprite(700, 325, 'buddy');
                 this._enemy.scale.setTo(0.3, 0.3);
+                this._enemy.animations.add('idle', Phaser.Animation.generateFrameNames('fattony',1,4,'',1),5,true);
+            	this._enemy.animations.play('idle');
                 this.enemyPet();
                 break;
         }
@@ -79,11 +91,11 @@ var FightScene = {
 		var spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 		spaceKey.onDown.add(this.onSpacePress, this);
 
-        this._player = this.game.add.sprite(10, 325, 'player');
+        this._player = this.game.add.sprite(10, 340, 'player');
         this._player.scale.setTo(0.4, 0.4);
         this._player.animations.add('stop', Phaser.Animation.generateFrameNames('saltar',5,5,'',1),0,false);
         this._player.visible = false;
-        this._playerPet = this.game.add.sprite(200, 380, 'wolfiePet');
+        this._playerPet = this.game.add.sprite(200, 365, 'wolfiePet');
         this._playerPet.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',1),4,true);
         this._playerPet.visible = false;
         this._enemy.visible = false;
@@ -431,6 +443,7 @@ var PlayScene = require('./play_scene');
 var GameOver = require('./gameover_scene');
 var MenuScene = require('./menu_scene');
 var FightScene = require('./fight_scene');
+var VictoryScene = require('./victory_scene');
 
 var BootScene = {
   preload: function () {
@@ -455,8 +468,9 @@ var PreloaderScene = {
     
     this.load.onLoadStart.add(this.loadStart, this);
 
-    //Imagen para el game over
+    //Imagen para el game over y victory
     this.game.load.image('gameOver', 'images/MMT/gameover.png');
+    this.game.load.image('victory', 'images/MMT/victoria.png');
 
     //Imagenes para el play_scene
     this.game.load.image('menu', 'images/menu.jpg');
@@ -520,11 +534,12 @@ window.init = function () {
   game.state.add('play', PlayScene);
   game.state.add('gameOver', GameOver);
   game.state.add('fight', FightScene);
+  game.state.add('victory', VictoryScene);
 
   game.state.start('boot');
 };
 
-},{"./fight_scene":1,"./gameover_scene":2,"./menu_scene":4,"./play_scene":5}],4:[function(require,module,exports){
+},{"./fight_scene":1,"./gameover_scene":2,"./menu_scene":4,"./play_scene":5,"./victory_scene":6}],4:[function(require,module,exports){
 var MenuScene = {
     create: function () {
         this.game.world.setBounds(0, 0, 800, 600);
@@ -557,7 +572,7 @@ module.exports = MenuScene;
 //mover el player.
 var PlayerState = {'JUMP':0, 'RUN':1, 'FALLING':2, 'STOP':3, 'FIGHT':4}
 var Direction = {'LEFT':0, 'RIGHT':1, 'NONE':3}
-var playerPos = {x: 10, y: 10};
+var playerPos = {x: 2600, y: 10};
 var enemyFighted = 0;
 
 //Scena de juego.
@@ -637,13 +652,19 @@ var PlayScene = {
       this._enemies.create(750, 300, 'enemy');*/
 
       // Animaciones de los enemigos
-      this._enemy1.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',2),10,true);
-      this._enemy2.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',2),10,true);
-      this._enemy3.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',2),10,true);
-      this._enemy4.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',2),10,true);
-      this._enemy5.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',2),10,true);
-      this._boss.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',2),10,true);
-      //this._enemy1.animations.play('idle'); //iniciar todas las animaciones (no se si aqui funciona)
+      this._enemy1.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',1),5,true);
+      this._enemy2.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',1),5,true);
+      this._enemy3.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',1),5,true);
+      this._enemy4.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',1),5,true);
+      this._enemy5.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',1),5,true);
+      this._boss.animations.add('idle', Phaser.Animation.generateFrameNames('fattony',1,4,'',1),5,true);
+
+      this._enemy1.animations.play('idle');
+      this._enemy2.animations.play('idle');
+      this._enemy3.animations.play('idle');
+      this._enemy4.animations.play('idle');
+      this._enemy5.animations.play('idle');
+      this._boss.animations.play('idle');
       
       //nombre de la animación, frames, framerate, isloop
       this._player.animations.add('run', Phaser.Animation.generateFrameNames('corre',1,5,'',1),10,true);
@@ -733,6 +754,9 @@ var PlayScene = {
         var colboss = this.game.physics.arcade.collide(this._boss, this.groundLayer, this.collision(colboss));
         var movement = this.GetMovement();
 
+        
+        //this._enemy2.animations.play('idle');
+
         //transitions
         switch(this._playerState) {
             case PlayerState.STOP:
@@ -805,6 +829,7 @@ var PlayScene = {
         this.movement(moveDirection, 5, this.backgroundLayer.layer.widthInPixels*this.backgroundLayer.scale.x - 10);
         this.checkPlayerFell();
         this.distanceEnemy(this._fightNumber);
+        this.OnFinalVictory();
     },
 
     //Funcion que utilizamos para guardar estas variables al cambiar de un state a otro.
@@ -938,9 +963,38 @@ var PlayScene = {
         this.game.world.setBounds(0, 0, 800, 600);
         this.tilemap.destroy();
         this.tiles.destroy();
+    },
+
+    OnFinalVictory: function () {
+      if(this._player.x > 2800) {
+        this._fightNumber = 0;
+        this._player.x = 10;
+        this._player.y = 10;
+        this.game.state.start('victory');
+      }
     }
 };
 
 module.exports = PlayScene;
 
+},{}],6:[function(require,module,exports){
+var VictoryScene = {
+    create: function () {
+        console.log("Victory");
+        this.game.world.setBounds(0, 0, 800, 600);
+
+        var logo = this.game.add.sprite(0, 0, 'victory');
+        var button = this.game.add.button(this.game.world.centerX, this.game.world.centerY, 'button', this.actionOnClick, this, 2, 1, 0);
+        button.anchor.set(0.5);
+        var text = this.game.add.text(0, 0, "Main Menu");
+        text.anchor.set(0.5);
+        button.addChild(text);
+    },
+
+    actionOnClick: function () {
+        this.game.state.start('menu');
+    }
+};
+
+module.exports = VictoryScene;
 },{}]},{},[3]);
