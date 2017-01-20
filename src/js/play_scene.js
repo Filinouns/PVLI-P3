@@ -35,6 +35,8 @@ var PlayScene = {
       this.columnas = this.map.createLayer('Columnas');
       //Creamos al player con un sprite por defecto. (lo creamos aqui para que las layers que se añaden despues queden por delante delñ player).
       this._player = this.game.add.sprite(playerPos.x, playerPos.y, 'player');
+      this._player.scale.setTo(0.3, 0.3);
+      this._player.anchor.set(0.5, 0.5);
       this.groundLayer = this.map.createLayer('Suelo');
       this.arboles = this.map.createLayer('Arboles');
       // Layers de plano de muerte y enemigos
@@ -91,9 +93,9 @@ var PlayScene = {
       //this._enemy1.animations.play('idle'); //iniciar todas las animaciones (no se si aqui funciona)
       
       //nombre de la animación, frames, framerate, isloop
-      this._player.animations.add('run', Phaser.Animation.generateFrameNames('rush_run',1,5,'',2),10,true);
-      this._player.animations.add('stop', Phaser.Animation.generateFrameNames('rush_idle',1,1,'',2),0,false);
-      this._player.animations.add('jump', Phaser.Animation.generateFrameNames('rush_jump',2,2,'',2),0,false);
+      this._player.animations.add('run', Phaser.Animation.generateFrameNames('corre',1,5,'',1),10,true);
+      this._player.animations.add('stop', Phaser.Animation.generateFrameNames('saltar',5,5,'',1),0,false);
+      this._player.animations.add('jump', Phaser.Animation.generateFrameNames('saltar',1,2,'',1),5,false);
       this.configure();
 
       // Code for the pause menu

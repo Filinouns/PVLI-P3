@@ -26,7 +26,49 @@ var FightScene = {
 	_initialArmor: initialArmor,
 
 	create: function () {
-		this.game.stage.backgroundColor = "#56b24d";
+		// FightNumber
+		switch(this._fightNumber) {
+            case 0:
+            	this.background = this.game.add.sprite(0, 0, 'fight1');
+        		//background.anchor.setTo(0.5, 0.5);
+            	//Creamos las imagenes necesarias
+            	this.text = this.game.add.text(175, 100, 'Bienvenido al sistema de combate \n de Mountain Meeting Tales', style);
+            	//this._playerPet.visible = false;
+            	this._enemy = this.game.add.sprite(750, 325, 'enemy');
+            	this.enemyPet();
+            	break;
+            case 1:
+            	this.background = this.game.add.sprite(0, 0, 'fight2');
+                this.text = this.dialogos();
+                this._enemy = this.game.add.sprite(750, 325, 'enemy');
+                this.enemyPet();
+                break;
+            case 2:
+            	this.background = this.game.add.sprite(0, 0, 'fight2');
+                this.text = this.dialogos();
+                this._enemy = this.game.add.sprite(750, 325, 'enemy');
+                this.enemyPet();
+                break;
+            case 3:
+            	this.background = this.game.add.sprite(0, 0, 'fight2');
+                this.text = this.dialogos();
+                this._enemy = this.game.add.sprite(750, 325, 'enemy');
+                this.enemyPet();
+                break;
+            case 4:
+            	this.background = this.game.add.sprite(0, 0, 'fight2');
+                this.text = this.dialogos();
+                this._enemy = this.game.add.sprite(750, 325, 'enemy');
+                this.enemyPet();
+                break;
+            case 5: //Boss
+            	this.background = this.game.add.sprite(0, 0, 'fight1');
+                this.text = this.bossText();
+                this._enemy = this.game.add.sprite(750, 325, 'buddy');
+                this._enemy.scale.setTo(0.3, 0.3);
+                this.enemyPet();
+                break;
+        }
 
 		// Texto para el inicio de combate
 		this.fightText = this.game.add.text(300, 100, 'FIGHT!', style);
@@ -37,45 +79,13 @@ var FightScene = {
 		var spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 		spaceKey.onDown.add(this.onSpacePress, this);
 
-		// FightNumber
-		switch(this._fightNumber) {
-            case 0:
-            	//Creamos las imagenes necesarias
-            	this.text = this.game.add.text(175, 100, 'Bienvenido al sistema de combate \n de Mountain Meeting Tales', style);
-            	this._player = this.game.add.sprite(10, 10, 'player_fight');
-            	//this._playerPet.visible = false;
-            	this._enemy = this.game.add.sprite(750, 245, 'enemy');
-            	this.enemyPet();
-            	break;
-            case 1:
-                this.text = this.dialogos();
-                this._enemy = this.game.add.sprite(750, 245, 'enemy');
-                this.enemyPet();
-                break;
-            case 2:
-                this.text = this.dialogos();
-                this._enemy = this.game.add.sprite(750, 245, 'enemy');
-                this.enemyPet();
-                break;
-            case 3:
-                this.text = this.dialogos();
-                this._enemy = this.game.add.sprite(750, 245, 'enemy');
-                this.enemyPet();
-                break;
-            case 4:
-                this.text = this.dialogos();
-                this._enemy = this.game.add.sprite(750, 245, 'enemy');
-                this.enemyPet();
-                break;
-            case 5: //Boss
-                this.text = this.bossText();
-                this._enemy = this.game.add.sprite(750, 300, 'buddy');
-                this._enemy.scale.setTo(0.3, 0.3);
-                this.enemyPet();
-                break;
-        }
-
-        this._playerPet = this.game.add.sprite(200, 300, 'playerPet');
+        this._player = this.game.add.sprite(10, 325, 'player');
+        this._player.scale.setTo(0.4, 0.4);
+        this._player.animations.add('stop', Phaser.Animation.generateFrameNames('saltar',5,5,'',1),0,false);
+        this._player.visible = false;
+        this._playerPet = this.game.add.sprite(200, 380, 'wolfiePet');
+        this._playerPet.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',1),4,true);
+        this._playerPet.visible = false;
         this._enemy.visible = false;
         this._enemy.scale.x *= -1;
         this._enemyPet.visible = false;
@@ -114,6 +124,8 @@ var FightScene = {
 		this.enemyPetArmor.setText('Armor enemigo: ' + this._enemyPetvars.armor);
 
 		this._enemyPet.animations.play('idle');
+		this._playerPet.animations.play('idle');
+		this._player.animations.play('stop');
 
 		//Poner aqui una cuenta atras que cada x tiempo haga la animacion de ataque
 
@@ -147,10 +159,10 @@ var FightScene = {
 	/*-----------------------------------------------------------Creacion objetos------------------------------------------------------------*/
 
 	enemyPet: function () { //Se podran crear todas las animaciones a la vez?
-		var random = this.getRandomArbitrary(0, 5); //random de 0 a 5
+		var random = this.getRandomArbitrary(0, 4); //random de 0 a 5
 
 		if(this._boss){ // Sprite boss
-			this._enemyPet = this.game.add.sprite(550, 300, 'drakePet');
+			this._enemyPet = this.game.add.sprite(550, 325, 'drakePet');
 			this._enemyPet.scale.x *= -1;
 			this._enemyPet.animations.add('attack', Phaser.Animation.generateFrameNames('attack',1,5,'',1),4,false);
 			this._enemyPet.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,5,'',1),4,true);
@@ -158,25 +170,25 @@ var FightScene = {
 		}
 
 		if (random < 1){ //Sprite avestruz
-			this._enemyPet = this.game.add.sprite(550, 300, 'chocoPet');
+			this._enemyPet = this.game.add.sprite(550, 380, 'chocoPet');
 			this._enemyPet.scale.x *= -1;
 			this._enemyPet.animations.add('attack', Phaser.Animation.generateFrameNames('attack',1,4,'',1),4,false);
 			this._enemyPet.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,3,'',1),4,true);
 		} else if (random < 2) { //Sprite hipopotamo
-			this._enemyPet = this.game.add.sprite(450, 300, 'hippoPet');
+			this._enemyPet = this.game.add.sprite(450, 380, 'hippoPet');
 			this._enemyPet.animations.add('attack', Phaser.Animation.generateFrameNames('attack',1,4,'',1),4,false);
 			this._enemyPet.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',1),4,true);
 		} else if (random < 3) { // Sprite rinoceronte
-			this._enemyPet = this.game.add.sprite(550, 300, 'rinhoPet');
+			this._enemyPet = this.game.add.sprite(550, 380, 'rinhoPet');
 			this._enemyPet.scale.x *= -1;
 			this._enemyPet.animations.add('attack', Phaser.Animation.generateFrameNames('attack',1,7,'',1),4,false);
 			this._enemyPet.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',1),4,true);
 		} else if (random < 4) { //Sprite tigre
-			this._enemyPet = this.game.add.sprite(450, 300, 'taigerPet');
+			this._enemyPet = this.game.add.sprite(450, 380, 'taigerPet');
 			this._enemyPet.animations.add('attack', Phaser.Animation.generateFrameNames('attack',1,4,'',1),4,false);
 			this._enemyPet.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,5,'',1),4,true);
 		} else if (random < 5) { //Sprite lobo
-			this._enemyPet = this.game.add.sprite(550, 300, 'wolfiePet');
+			this._enemyPet = this.game.add.sprite(550, 380, 'wolfiePet');
 			this._enemyPet.scale.x *= -1;
 			this._enemyPet.animations.add('attack', Phaser.Animation.generateFrameNames('attack',1,5,'',1),4,false);
 			this._enemyPet.animations.add('idle', Phaser.Animation.generateFrameNames('estar',1,4,'',1),4,true);
@@ -300,6 +312,8 @@ var FightScene = {
 	/*-----------------------------------------------------Combate------------------------------------------------*/
 
 	startBattle: function () {
+		this._player.visible = true;
+		this._playerPet.visible = true;
 		this._enemyPet.visible = true;
 		this._enemy.visible = true;
 	},
@@ -382,7 +396,8 @@ module.exports = FightScene;
 var GameOver = {
     create: function () {
         console.log("Game Over");
-        var button = this.game.add.button(400, 300, 'button', this.actionOnClick, this, 2, 1, 0);
+        var logo = this.game.add.sprite(0, 0, 'gameOver');
+        var button = this.game.add.button(700, 500, 'button', this.actionOnClick, this, 2, 1, 0);
         button.anchor.set(0.5);
         var goText = this.game.add.text(400, 100, "GameOver");
         var text = this.game.add.text(0, 0, "Reset Game");
@@ -390,7 +405,7 @@ var GameOver = {
         goText.anchor.set(0.5);
         button.addChild(text);
         
-        var returnButton = this.game.add.button(400, 200, 'button', this.goMenu, this, 2, 1, 0);
+        var returnButton = this.game.add.button(700, 400, 'button', this.goMenu, this, 2, 1, 0);
         returnButton.anchor.set(0.5);
 
         var returnMenuText = this.game.add.text(0, 0, 'Return Main Menu');
@@ -422,7 +437,7 @@ var BootScene = {
     // load here assets required for the loading screen
     this.game.load.image('preloader_bar', 'images/preloader_bar.png');
     this.game.load.spritesheet('button', 'images/buttons.png', 168, 70);
-    this.game.load.image('logo', 'images/phaser.png');
+    this.game.load.image('logo', 'images/MMT/logo.png');
   },
 
   create: function () {
@@ -440,24 +455,27 @@ var PreloaderScene = {
     
     this.load.onLoadStart.add(this.loadStart, this);
 
+    //Imagen para el game over
+    this.game.load.image('gameOver', 'images/MMT/gameover.png');
+
     //Imagenes para el play_scene
     this.game.load.image('menu', 'images/menu.jpg');
     this.game.load.tilemap('tilemap', 'images/MMT/map.json', null, Phaser.Tilemap.TILED_JSON);
     this.game.load.image('tiles', 'images/MMT/Tiles.png');
-    this.game.load.atlas('player', 'images/rush_spritesheet.png', 'images/rush_spritesheet.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+    this.game.load.atlas('player', 'images/MMT/woody.png', 'images/MMT/woody.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
     this.game.load.atlas('enemy', 'images/MMT/robabocatas.png', 'images/MMT/robabocatas.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
     this.game.load.atlas('buddy', 'images/MMT/fattony.png', 'images/MMT/fattony.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
 
     //Imagenes para el fight_scene
-    this.game.load.atlas('player_fight', 'images/player_fight.png', 'images/rush_spritesheet.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
     this.game.load.atlas('playerPet', 'images/playerPet.png', 'images/rush_spritesheet.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
-    //Imegenes de las mascotas en el fight_scene
     this.game.load.atlas('drakePet', 'images/MMT/drake.png', 'images/MMT/drake.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
     this.game.load.atlas('chocoPet', 'images/MMT/avestruz.png', 'images/MMT/avestruz.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
     this.game.load.atlas('hippoPet', 'images/MMT/hippo.png', 'images/MMT/hippo.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
     this.game.load.atlas('rinhoPet', 'images/MMT/rinhocop.png', 'images/MMT/rhinocop.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
     this.game.load.atlas('taigerPet', 'images/MMT/taiger.png', 'images/MMT/taiger.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
     this.game.load.atlas('wolfiePet', 'images/MMT/wolfie.png', 'images/MMT/wolfie.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+    this.game.load.image('fight1', 'images/MMT/outsidefight.png');
+    this.game.load.image('fight2', 'images/MMT/fightmap.png');
 
     this.load.onLoadComplete.add(this.loadComplete, this);
   },
@@ -570,6 +588,8 @@ var PlayScene = {
       this.columnas = this.map.createLayer('Columnas');
       //Creamos al player con un sprite por defecto. (lo creamos aqui para que las layers que se añaden despues queden por delante delñ player).
       this._player = this.game.add.sprite(playerPos.x, playerPos.y, 'player');
+      this._player.scale.setTo(0.3, 0.3);
+      this._player.anchor.set(0.5, 0.5);
       this.groundLayer = this.map.createLayer('Suelo');
       this.arboles = this.map.createLayer('Arboles');
       // Layers de plano de muerte y enemigos
@@ -626,9 +646,9 @@ var PlayScene = {
       //this._enemy1.animations.play('idle'); //iniciar todas las animaciones (no se si aqui funciona)
       
       //nombre de la animación, frames, framerate, isloop
-      this._player.animations.add('run', Phaser.Animation.generateFrameNames('rush_run',1,5,'',2),10,true);
-      this._player.animations.add('stop', Phaser.Animation.generateFrameNames('rush_idle',1,1,'',2),0,false);
-      this._player.animations.add('jump', Phaser.Animation.generateFrameNames('rush_jump',2,2,'',2),0,false);
+      this._player.animations.add('run', Phaser.Animation.generateFrameNames('corre',1,5,'',1),10,true);
+      this._player.animations.add('stop', Phaser.Animation.generateFrameNames('saltar',5,5,'',1),0,false);
+      this._player.animations.add('jump', Phaser.Animation.generateFrameNames('saltar',1,2,'',1),5,false);
       this.configure();
 
       // Code for the pause menu
